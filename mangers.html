@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manager Dashboard — Aha Yemi Ruchulu</title>
+<style>
+:root{
+  --bg:#07060A;--bg2:#0E0C12;--surface:#141218;--surface2:#1A1820;
+  --gold:#C79A3B;--gold-lt:#D4A843;--text:#F5F3EF;
+  --muted:rgba(245,243,239,.5);--dim:rgba(245,243,239,.22);
+  --bdr:rgba(199,154,59,.16);--bdr2:rgba(199,154,59,.38);
+  --green:#2E7D32;--red:#8C1D18;--amber:#E65100;
+  --font:'Segoe UI',system-ui,sans-serif;--rad:4px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;font-size:14px;}
+a{color:var(--gold);text-decoration:none;}
+input,select,textarea{background:rgba(199,154,59,.05);border:1px solid var(--bdr);color:var(--text);
+  padding:10px 14px;font-size:13px;font-family:var(--font);outline:none;width:100%;border-radius:var(--rad);}
+input:focus,select:focus,textarea:focus{border-color:var(--gold);}
+input::placeholder,textarea::placeholder{color:var(--dim);}
+select option{background:#1A1820;}
+button{font-family:var(--font);cursor:pointer;}
+
+/* LOGIN */
+.login-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px;background:var(--bg);}
+.login-box{background:var(--surface);border:1px solid var(--bdr);padding:52px 44px;width:100%;max-width:420px;text-align:center;}
+.login-logo{font-size:26px;font-weight:300;color:var(--gold);margin-bottom:6px;}
+.login-sub{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:36px;}
+.login-box h2{font-size:17px;font-weight:400;margin-bottom:22px;color:var(--text);}
+.login-err{color:#EF5350;font-size:12px;margin-top:10px;display:none;}
+
+/* APP LAYOUT */
+.app{display:none;min-height:100vh;}
+.app.show{display:flex;}
+.sidebar{width:210px;background:var(--bg2);border-right:1px solid var(--bdr);
+  position:fixed;top:0;left:0;bottom:0;z-index:100;display:flex;flex-direction:column;}
+.sidebar-logo{padding:22px 18px;border-bottom:1px solid var(--bdr);}
+.sidebar-logo-name{font-size:14px;font-weight:600;}
+.sidebar-branch{font-size:11px;color:var(--gold);letter-spacing:1px;margin-top:3px;text-transform:uppercase;}
+.sidebar-nav{flex:1;padding:16px 10px;display:flex;flex-direction:column;gap:2px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--rad);
+  color:var(--muted);font-size:13px;cursor:pointer;transition:all .2s;border:none;background:none;width:100%;text-align:left;}
+.nav-item:hover{background:rgba(199,154,59,.07);color:var(--text);}
+.nav-item.active{background:rgba(199,154,59,.12);color:var(--gold);}
+.nav-icon{font-size:15px;width:20px;text-align:center;}
+.sidebar-footer{padding:14px 18px;border-top:1px solid var(--bdr);}
+.sidebar-footer p{font-size:11px;color:var(--dim);}
+
+.main-area{margin-left:210px;flex:1;display:flex;flex-direction:column;}
+.topbar{background:var(--bg2);border-bottom:1px solid var(--bdr);padding:14px 24px;
+  display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
+.topbar-title{font-size:15px;font-weight:500;}
+.page-content{padding:24px;flex:1;}
+
+/* TAB SYSTEM */
+.tab-panels .panel{display:none;}
+.tab-panels .panel.active{display:block;}
+
+/* STAT CARDS */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px;}
+.stat-card{background:var(--surface);border:1px solid var(--bdr);padding:20px 18px;position:relative;overflow:hidden;}
+.stat-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--gold);opacity:0;transition:.3s;}
+.stat-card:hover::after{opacity:1;}
+.stat-lbl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.stat-val{font-size:30px;font-weight:300;color:var(--gold);line-height:1;}
+.stat-sub{font-size:11px;color:var(--dim);margin-top:5px;}
+.stat-ico{position:absolute;right:14px;top:14px;font-size:20px;opacity:.2;}
+
+/* TODAY SECTION */
+.today-section{margin-bottom:24px;}
+.today-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.today-date{font-size:12px;color:var(--muted);letter-spacing:1px;}
+.today-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
+.today-card{background:var(--surface);border:1px solid var(--bdr);padding:18px 20px;
+  display:flex;justify-content:space-between;align-items:flex-start;
+  transition:border-color .3s;cursor:pointer;}
+.today-card:hover{border-color:var(--bdr2);}
+.today-card-time{font-size:18px;font-weight:500;color:var(--gold);}
+.today-card-name{font-size:14px;font-weight:500;margin-bottom:3px;}
+.today-card-meta{font-size:11px;color:var(--muted);}
+.today-card-guests{font-size:20px;font-weight:300;color:var(--text);text-align:right;}
+.today-card-guestlbl{font-size:10px;color:var(--dim);text-align:right;}
+
+/* DATA TABLE */
+.data-table-wrap{background:var(--surface);border:1px solid var(--bdr);overflow:hidden;}
+.table-header{padding:14px 18px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.table-title{font-size:14px;font-weight:500;}
+.data-table{width:100%;border-collapse:collapse;}
+.data-table th{padding:9px 14px;text-align:left;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--muted);border-bottom:1px solid var(--bdr);background:var(--bg2);font-weight:600;}
+.data-table td{padding:11px 14px;border-bottom:1px solid rgba(199,154,59,.05);font-size:13px;vertical-align:middle;}
+.data-table tr:last-child td{border-bottom:none;}
+.data-table tr:hover td{background:rgba(199,154,59,.035);}
+
+/* BADGES */
+.badge{display:inline-block;padding:3px 9px;font-size:10px;letter-spacing:1px;text-transform:uppercase;font-weight:600;border-radius:2px;}
+.badge-confirmed{background:rgba(46,125,50,.2);color:#66BB6A;}
+.badge-pending{background:rgba(230,81,0,.2);color:#FFA726;}
+.badge-cancelled{background:rgba(140,29,24,.2);color:#EF5350;}
+.badge-completed{background:rgba(21,101,192,.2);color:#42A5F5;}
+
+/* BUTTONS */
+.btn{padding:8px 16px;border:none;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;border-radius:var(--rad);transition:all .2s;}
+.btn-gold{background:var(--gold);color:#0B0B0B;}
+.btn-gold:hover{background:var(--gold-lt);}
+.btn-outline{background:transparent;border:1px solid var(--bdr2);color:var(--gold);}
+.btn-outline:hover{background:rgba(199,154,59,.08);}
+.btn-danger{background:transparent;border:1px solid rgba(140,29,24,.4);color:#EF5350;}
+.btn-danger:hover{background:rgba(140,29,24,.12);}
+.btn-success{background:transparent;border:1px solid rgba(46,125,50,.4);color:#66BB6A;}
+.btn-success:hover{background:rgba(46,125,50,.12);}
+.btn-sm{padding:5px 11px;font-size:10px;}
+
+/* FILTERS */
+.filter-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px;}
+.filter-row select,.filter-row input[type=date]{width:auto;}
+.search-wrap{position:relative;flex:1;min-width:180px;max-width:260px;}
+.search-wrap input{padding-left:34px;}
+.search-ico{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--dim);font-size:13px;pointer-events:none;}
+
+/* FORM */
+.form-group{margin-bottom:14px;}
+.form-label{display:block;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+.form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.card{background:var(--surface);border:1px solid var(--bdr);padding:22px;}
+.card-title{font-size:13px;font-weight:500;margin-bottom:16px;color:var(--text);}
+
+/* TABLES MANAGEMENT */
+.tables-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:16px;}
+.table-card{background:var(--surface2);border:1px solid var(--bdr);padding:18px;text-align:center;position:relative;}
+.table-card.inactive{opacity:.45;}
+.table-card-name{font-size:15px;font-weight:500;margin-bottom:4px;}
+.table-card-cap{font-size:11px;color:var(--muted);}
+.table-card-status{font-size:10px;margin-top:8px;}
+.table-card-actions{display:flex;gap:6px;justify-content:center;margin-top:12px;}
+
+/* BLOCKED DATES */
+.blocked-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;}
+.blocked-item{display:flex;justify-content:space-between;align-items:center;
+  background:var(--surface2);border:1px solid var(--bdr);padding:12px 16px;}
+.blocked-date{font-size:14px;font-weight:500;color:var(--gold);}
+.blocked-reason{font-size:12px;color:var(--muted);margin-top:2px;}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(7,6,10,.88);z-index:1000;
+  display:none;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--surface);border:1px solid var(--bdr2);padding:32px;width:100%;max-width:480px;}
+.modal-title{font-size:17px;font-weight:400;margin-bottom:18px;}
+.modal-footer{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;flex-wrap:wrap;}
+
+/* TOAST / LOADER */
+.spinner{width:18px;height:18px;border:2px solid var(--bdr);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite;display:inline-block;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-overlay{display:none;position:fixed;inset:0;background:rgba(7,6,10,.5);z-index:500;align-items:center;justify-content:center;}
+.loading-overlay.show{display:flex;}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--surface2);border:1px solid var(--bdr2);
+  padding:12px 20px;font-size:13px;z-index:2000;opacity:0;transform:translateY(8px);transition:all .3s;border-radius:var(--rad);}
+.toast.show{opacity:1;transform:translateY(0);}
+.toast.success{border-color:rgba(46,125,50,.5);color:#66BB6A;}
+.toast.error{border-color:rgba(140,29,24,.5);color:#EF5350;}
+
+/* MISC */
+.section-gap{margin-bottom:20px;}
+.empty-state{text-align:center;padding:40px;color:var(--dim);}
+.empty-ico{font-size:28px;display:block;margin-bottom:8px;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.mt-12{margin-top:12px;}
+.text-gold{color:var(--gold);}
+
+@media(max-width:900px){
+  .sidebar{width:180px;} .main-area{margin-left:180px;}
+  .stats-row{grid-template-columns:1fr 1fr;} .two-col{grid-template-columns:1fr;}
+}
+@media(max-width:640px){
+  .sidebar{display:none;} .main-area{margin-left:0;}
+  .stats-row{grid-template-columns:1fr 1fr;} .filter-row{flex-direction:column;align-items:stretch;}
+}
+</style>
+</head>
+<body>
+
+<div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div></div>
+<div class="toast" id="toast"></div>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-box">
+    <div class="login-logo">Aha Yemi Ruchulu</div>
+    <div class="login-sub">Branch Manager Dashboard</div>
+    <h2>Enter Your Manager Token</h2>
+    <input type="password" id="tokenInput" placeholder="Paste your manager token…" autocomplete="off">
+    <div class="login-err" id="loginErr">Invalid token. Contact the owner for access.</div>
+    <button class="btn btn-gold" style="width:100%;margin-top:14px;" onclick="login()">Access Dashboard</button>
+    <p style="margin-top:16px;font-size:11px;color:var(--dim);">Your token was shared by the restaurant owner.<br>Keep it private and secure.</p>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="app" id="app">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-name">Aha Yemi Ruchulu</div>
+      <div class="sidebar-branch" id="branchLabel">Branch Manager</div>
+    </div>
+    <nav class="sidebar-nav">
+      <button class="nav-item active" onclick="showTab('today')"><span class="nav-icon">📅</span>Today</button>
+      <button class="nav-item" onclick="showTab('reservations')"><span class="nav-icon">📋</span>All Reservations</button>
+      <button class="nav-item" onclick="showTab('upcoming')"><span class="nav-icon">🔜</span>Upcoming</button>
+      <button class="nav-item" onclick="showTab('tables')"><span class="nav-icon">🪑</span>Tables</button>
+      <button class="nav-item" onclick="showTab('blocked')"><span class="nav-icon">🚫</span>Block Dates</button>
+      <button class="nav-item" onclick="showTab('settings')"><span class="nav-icon">⚙</span>Settings</button>
+    </nav>
+    <div class="sidebar-footer">
+      <p id="lastRefresh">—</p>
+      <button class="btn btn-outline btn-sm" style="width:100%;margin-top:8px;" onclick="logout()">Sign Out</button>
+    </div>
+  </aside>
+
+  <main class="main-area">
+    <div class="topbar">
+      <div class="topbar-title" id="pageTitle">Today's Bookings</div>
+      <div style="display:flex;gap:10px;">
+        <button class="btn btn-outline btn-sm" onclick="loadDashboard()">⟳ Refresh</button>
+        <span id="pendingBadge" style="display:none;background:var(--amber);color:#fff;padding:4px 12px;font-size:11px;font-weight:600;border-radius:var(--rad);">0 Pending</span>
+      </div>
+    </div>
+
+    <div class="page-content">
+    <div class="tab-panels">
+
+      <!-- TODAY -->
+      <div class="panel active" id="panel-today">
+        <div class="stats-row">
+          <div class="stat-card"><div class="stat-lbl">Bookings Today</div><div class="stat-val" id="s-today">—</div><div class="stat-ico">📅</div></div>
+          <div class="stat-card"><div class="stat-lbl">Guests Today</div><div class="stat-val" id="s-guests">—</div><div class="stat-ico">👥</div></div>
+          <div class="stat-card"><div class="stat-lbl">Pending Confirm</div><div class="stat-val" id="s-pending" style="color:#FFA726;">—</div><div class="stat-ico">⏳</div></div>
+          <div class="stat-card"><div class="stat-lbl">Table Utilisation</div><div class="stat-val" id="s-util" style="color:#42A5F5;">—</div><div class="stat-ico">🪑</div></div>
+        </div>
+
+        <div class="today-section">
+          <div class="today-header">
+            <h3 style="font-size:14px;font-weight:500;">Today's Reservations</h3>
+            <span class="today-date" id="todayDateLabel">—</span>
+          </div>
+          <div class="today-cards" id="todayCards">
+            <div class="empty-state"><span class="empty-ico">📅</span>Loading…</div>
+          </div>
+        </div>
+
+        <div class="data-table-wrap mt-12">
+          <div class="table-header">
+            <div class="table-title">Pending Confirmation</div>
+            <button class="btn btn-success btn-sm" onclick="confirmAllPending()">✓ Confirm All Pending</button>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead><tr><th>Ref</th><th>Name</th><th>Phone</th><th>Date</th><th>Time</th><th>Guests</th><th>Actions</th></tr></thead>
+              <tbody id="pendingBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ALL RESERVATIONS -->
+      <div class="panel" id="panel-reservations">
+        <div class="filter-row">
+          <div class="search-wrap">
+            <span class="search-ico">🔍</span>
+            <input id="resSearch" placeholder="Search name, phone, ref…" oninput="filterRes()">
+          </div>
+          <select id="resStatus" onchange="filterRes()">
+            <option value="">All Statuses</option>
+            <option value="confirmed">Confirmed</option>
+            <option value="pending">Pending</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+          <input type="date" id="resDate" onchange="filterRes()" style="width:160px;">
+          <button class="btn btn-outline btn-sm" onclick="clearResFilters()">Clear</button>
+        </div>
+        <div class="data-table-wrap">
+          <div class="table-header">
+            <div class="table-title">All Reservations</div>
+            <span id="resCount" style="font-size:12px;color:var(--muted);">—</span>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead><tr><th>Ref</th><th>Name</th><th>Phone</th><th>Date</th><th>Time</th><th>Guests</th><th>Table(s)</th><th>Special Req.</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="allResBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- UPCOMING -->
+      <div class="panel" id="panel-upcoming">
+        <div class="data-table-wrap">
+          <div class="table-header"><div class="table-title">Upcoming Reservations (Next 7 days)</div></div>
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead><tr><th>Ref</th><th>Name</th><th>Phone</th><th>Date</th><th>Time</th><th>Guests</th><th>Table(s)</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="upcomingBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TABLES -->
+      <div class="panel" id="panel-tables">
+        <div class="two-col">
+          <div>
+            <h3 style="font-size:14px;font-weight:500;margin-bottom:14px;">Branch Tables</h3>
+            <div class="tables-grid" id="tablesGrid">
+              <div class="empty-state">Loading…</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">Add New Table</div>
+            <div class="form-group"><label class="form-label">Table Name *</label><input id="t-name" placeholder="e.g. Table 6 or Window Seat"></div>
+            <div class="form-group"><label class="form-label">Seating Capacity *</label><input id="t-cap" type="number" min="1" max="20" placeholder="4"></div>
+            <button class="btn btn-gold" style="width:100%;margin-top:8px;" onclick="addTable()">Add Table →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- BLOCK DATES -->
+      <div class="panel" id="panel-blocked">
+        <div class="two-col">
+          <div>
+            <h3 style="font-size:14px;font-weight:500;margin-bottom:14px;">Blocked Dates</h3>
+            <div class="blocked-list" id="blockedList">
+              <div class="empty-state">Loading…</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">Block a Date</div>
+            <div class="form-group"><label class="form-label">Date *</label><input id="bd-date" type="date"></div>
+            <div class="form-group"><label class="form-label">Reason</label><input id="bd-reason" placeholder="e.g. Private event, holiday, maintenance…"></div>
+            <button class="btn btn-gold" style="width:100%;margin-top:8px;" onclick="blockDate()">Block Date →</button>
+            <p style="font-size:11px;color:var(--dim);margin-top:10px;line-height:1.6;">Blocked dates will not appear as available to customers in the reservation system.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="panel" id="panel-settings">
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title">⚙ Branch Operating Hours</div>
+            <div class="form-row-2">
+              <div class="form-group"><label class="form-label">Opening Time</label><input type="time" id="bs-open" value="11:00"></div>
+              <div class="form-group"><label class="form-label">Closing Time</label><input type="time" id="bs-close" value="22:30"></div>
+            </div>
+            <div class="form-row-2">
+              <div class="form-group"><label class="form-label">Max Guests / Booking</label><input type="number" id="bs-guests" value="20"></div>
+              <div class="form-group"><label class="form-label">Slot Interval (mins)</label><input type="number" id="bs-interval" value="30"></div>
+            </div>
+            <div class="form-group"><label class="form-label">Reservation Duration (mins)</label><input type="number" id="bs-duration" value="90"></div>
+            <button class="btn btn-gold" style="width:100%;margin-top:8px;" onclick="saveBranchSettings()">Save Branch Settings</button>
+          </div>
+          <div class="card">
+            <div class="card-title">📊 This Week Summary</div>
+            <div id="weekSummary" style="font-size:13px;color:var(--muted);line-height:2.2;">Loading…</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /tab-panels -->
+    </div>
+  </main>
+</div>
+
+<!-- RESERVATION DETAIL MODAL -->
+<div class="modal-overlay" id="resModal">
+  <div class="modal">
+    <div class="modal-title" id="modalTitle">Reservation Details</div>
+    <div id="modalBody"></div>
+    <div style="margin-top:16px;" id="cancelReasonWrap" style="display:none;">
+      <div class="form-group">
+        <label class="form-label">Cancellation Reason</label>
+        <input id="cancelReason" placeholder="Enter reason (optional)…">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline btn-sm" onclick="closeModal()">Close</button>
+      <button class="btn btn-success btn-sm" id="btnConfirm" onclick="doConfirm()" style="display:none;">✓ Confirm Booking</button>
+      <button class="btn btn-danger btn-sm" id="btnCancel"  onclick="showCancelReason()">✕ Cancel Booking</button>
+      <button class="btn btn-danger btn-sm" id="btnCancelConfirm" onclick="doCancel()" style="display:none;">Confirm Cancellation</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const API_URL = 'https://script.google.com/macros/s/AKfycbxCvG16NhAtmHc33FX5hwNgan7szrROlvOKqjvpq85kUHY5Xpu3opqYFGN2Ju5mUgdl/exec';
+
+let TOKEN = '', BRANCH_ID = '', BRANCH_NAME = '';
+let DASHBOARD = null, ALL_RES = [], TABLES = [], BLOCKED = [];
+let CURRENT_RES = null;
+
+// ── AUTH ─────────────────────────────────────────────────────
+function login() {
+  const t = document.getElementById('tokenInput').value.trim();
+  if (!t) return;
+  TOKEN = t;
+  sessionStorage.setItem('ayr_mgr_token', t);
+  loadDashboard();
+}
+function logout() {
+  TOKEN = '';
+  sessionStorage.removeItem('ayr_mgr_token');
+
+  document.getElementById('app').classList.remove('show');
+  document.getElementById('loginWrap').style.display = 'flex';
+  document.getElementById('tokenInput').value = '';
+  document.getElementById('loginErr').style.display = 'none';
+}
+
+// ── API ───────────────────────────────────────────────────────
+async function api(action, body = {}) {
+  const r = await fetch(API_URL, {
+    method: 'POST', body: JSON.stringify({ action, token: TOKEN, ...body })
+  });
+  return r.json();
+}
+
+// ── LOAD DASHBOARD ────────────────────────────────────────────
+async function loadDashboard() {
+  showLoading(true);
+  try {
+    const data = await api('getManagerDashboard');
+    if (!data.success) {
+      if (data.code === 401 || data.code === 403) { showLoginErr(); return; }
+      showToast(data.error, 'error'); return;
+    }
+
+    DASHBOARD    = data;
+    BRANCH_ID    = data.branch.branchId;
+    BRANCH_NAME  = data.branch.branchName;
+    ALL_RES      = data.recentReservations || [];
+
+    document.getElementById('branchLabel').textContent = BRANCH_NAME;
+    document.getElementById('loginWrap').style.display = 'none';
+    document.getElementById('app').classList.add('show');
+    document.getElementById('lastRefresh').textContent = new Date().toLocaleTimeString();
+    document.getElementById('todayDateLabel').textContent = new Date().toLocaleDateString('en-IN', {weekday:'long',day:'numeric',month:'long'});
+
+    // Stats
+    setText('s-today',   data.stats.todayBookings);
+    setText('s-guests',  data.stats.todayGuests);
+    setText('s-pending', data.stats.todayPending);
+    setText('s-util',    (data.utilisation?.utilisationPct || 0) + '%');
+
+    const pendingBadge = document.getElementById('pendingBadge');
+    if (data.stats.totalPending > 0) {
+      pendingBadge.style.display = 'inline';
+      pendingBadge.textContent   = data.stats.totalPending + ' Pending';
+    } else {
+      pendingBadge.style.display = 'none';
+    }
+
+    // Today cards
+    renderTodayCards(data.todayReservations || []);
+    // Pending table
+    renderPendingTable(data.pendingReservations || []);
+    // All reservations (use recent for now)
+    renderAllRes(ALL_RES);
+    // Upcoming
+    renderUpcoming(data.upcomingReservations || []);
+    // Tables
+    await loadTables();
+    // Blocked dates
+    await loadBlockedDates();
+    // Settings
+    populateSettings(data.settings || {});
+    // Week summary
+    buildWeekSummary(data);
+
+  } catch (e) {
+    showToast('Connection error: ' + e.message, 'error');
+  } finally { showLoading(false); }
+}
+
+function showLoginErr() {
+  document.getElementById('loginErr').style.display = 'block'; TOKEN = '';
+}
+
+// ── RENDER TODAY CARDS ─────────────────────────────────────────
+function renderTodayCards(res) {
+  const active = res.filter(r => r.status !== 'cancelled');
+  if (!active.length) {
+    document.getElementById('todayCards').innerHTML = '<div class="empty-state"><span class="empty-ico">🎉</span>No bookings today yet.</div>';
+    return;
+  }
+  document.getElementById('todayCards').innerHTML = active
+    .sort((a,b) => a.reservationTime?.localeCompare(b.reservationTime))
+    .map(r => `
+    <div class="today-card" onclick='openModal(${safeJson(r)})'>
+      <div>
+        <div class="today-card-time">${r.reservationTime || '—'}</div>
+        <div class="today-card-name">${r.customerName || '—'}</div>
+        <div class="today-card-meta">${r.phone || ''} · ${fmtTables(r.assignedTables)}</div>
+        ${r.specialRequests ? `<div style="font-size:11px;color:var(--amber);margin-top:4px;">📝 ${r.specialRequests.substring(0,40)}${r.specialRequests.length>40?'…':''}</div>` : ''}
+        <div style="margin-top:8px;"><span class="badge badge-${r.status}">${r.status}</span></div>
+      </div>
+      <div>
+        <div class="today-card-guests">${r.guests}</div>
+        <div class="today-card-guestlbl">Guests</div>
+      </div>
+    </div>`).join('');
+}
+
+// ── RENDER PENDING ─────────────────────────────────────────────
+function renderPendingTable(res) {
+  document.getElementById('pendingBody').innerHTML = res.length
+    ? res.map(r => `<tr>
+        <td><code style="font-size:11px;color:var(--gold);">${r.reservationId}</code></td>
+        <td>${r.customerName||'—'}</td>
+        <td><a href="tel:${r.phone}">${r.phone||'—'}</a></td>
+        <td>${fmtDate(r.reservationDate)}</td>
+        <td>${r.reservationTime||'—'}</td>
+        <td>${r.guests||'—'}</td>
+        <td>
+          <button class="btn btn-success btn-sm" onclick="quickConfirm('${r.reservationId}')">✓ Confirm</button>
+          <button class="btn btn-danger btn-sm" style="margin-left:4px;" onclick='openModal(${safeJson(r)})'>View</button>
+        </td>
+      </tr>`).join('')
+    : '<tr><td colspan="7" class="empty-state">No pending reservations ✓</td></tr>';
+}
+
+// ── RENDER ALL RESERVATIONS ────────────────────────────────────
+function renderAllRes(res) {
+  document.getElementById('resCount').textContent = res.length + ' found';
+  document.getElementById('allResBody').innerHTML = res.map(r => `<tr>
+    <td><code style="font-size:11px;color:var(--gold);">${r.reservationId}</code></td>
+    <td>${r.customerName||'—'}</td>
+    <td><a href="tel:${r.phone}">${r.phone||'—'}</a></td>
+    <td>${fmtDate(r.reservationDate)}</td>
+    <td>${r.reservationTime||'—'}</td>
+    <td>${r.guests||'—'}</td>
+    <td style="font-size:11px;">${fmtTables(r.assignedTables)}</td>
+    <td style="font-size:11px;color:var(--muted);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${r.specialRequests||'—'}</td>
+    <td><span class="badge badge-${r.status}">${r.status}</span></td>
+    <td><button class="btn btn-outline btn-sm" onclick='openModal(${safeJson(r)})'>View</button></td>
+  </tr>`).join('') || '<tr><td colspan="10" class="empty-state">No reservations found</td></tr>';
+}
+
+// ── RENDER UPCOMING ────────────────────────────────────────────
+function renderUpcoming(res) {
+  document.getElementById('upcomingBody').innerHTML = res.map(r => `<tr>
+    <td><code style="font-size:11px;color:var(--gold);">${r.reservationId}</code></td>
+    <td>${r.customerName||'—'}</td>
+    <td><a href="tel:${r.phone}">${r.phone||'—'}</a></td>
+    <td>${fmtDate(r.reservationDate)}</td>
+    <td>${r.reservationTime||'—'}</td>
+    <td>${r.guests||'—'}</td>
+    <td style="font-size:11px;">${fmtTables(r.assignedTables)}</td>
+    <td><span class="badge badge-${r.status}">${r.status}</span></td>
+    <td><button class="btn btn-outline btn-sm" onclick='openModal(${safeJson(r)})'>View</button></td>
+  </tr>`).join('') || '<tr><td colspan="9" class="empty-state">No upcoming reservations</td></tr>';
+}
+
+// ── FILTERS ────────────────────────────────────────────────────
+function filterRes() {
+  const q  = document.getElementById('resSearch').value.toLowerCase();
+  const st = document.getElementById('resStatus').value;
+  const dt = document.getElementById('resDate').value;
+  let f    = ALL_RES;
+  if (q)  f = f.filter(r => (r.customerName||'').toLowerCase().includes(q)||(r.phone||'').includes(q)||(r.reservationId||'').toLowerCase().includes(q));
+  if (st) f = f.filter(r => r.status === st);
+  if (dt) f = f.filter(r => { const d = r.reservationDate ? new Date(r.reservationDate).toISOString().split('T')[0] : ''; return d === dt; });
+  renderAllRes(f);
+}
+
+function clearResFilters() {
+  ['resSearch','resDate'].forEach(id => { const e=document.getElementById(id); if(e) e.value=''; });
+  document.getElementById('resStatus').value = '';
+  renderAllRes(ALL_RES);
+}
+
+// ── TABLES ─────────────────────────────────────────────────────
+async function loadTables() {
+  const data = await api('getTables', { branchId: BRANCH_ID });
+  if (!data.success) return;
+  TABLES = data.tables || [];
+  document.getElementById('tablesGrid').innerHTML = TABLES.map(t => `
+    <div class="table-card ${t.active ? '' : 'inactive'}">
+      <div class="table-card-name">${t.name}</div>
+      <div class="table-card-cap">${t.capacity} seats</div>
+      <div class="table-card-status"><span class="badge ${t.active ? 'badge-confirmed' : 'badge-cancelled'}">${t.active ? 'Active' : 'Disabled'}</span></div>
+      <div class="table-card-actions">
+        <button class="btn btn-sm ${t.active ? 'btn-danger' : 'btn-success'}" onclick="toggleTable('${t.tableId}',${!t.active})">${t.active ? 'Disable' : 'Enable'}</button>
+        <button class="btn btn-danger btn-sm" onclick="removeTable('${t.tableId}')">✕</button>
+      </div>
+    </div>`).join('') || '<div class="empty-state">No tables configured</div>';
+}
+
+async function addTable() {
+  const name = document.getElementById('t-name').value.trim();
+  const cap  = parseInt(document.getElementById('t-cap').value, 10);
+  if (!name || !cap) { showToast('Table name and capacity required.', 'error'); return; }
+  showLoading(true);
+  const r = await api('addTable', { branchId: BRANCH_ID, tableName: name, capacity: cap });
+  showLoading(false);
+  showToast(r.success ? 'Table added.' : r.error, r.success ? 'success' : 'error');
+  if (r.success) { document.getElementById('t-name').value=''; document.getElementById('t-cap').value=''; loadTables(); }
+}
+
+async function toggleTable(tableId, active) {
+  showLoading(true);
+  const r = await api('updateTable', { branchId: BRANCH_ID, tableId, active });
+  showLoading(false);
+  showToast(r.success ? 'Table updated.' : r.error, r.success ? 'success' : 'error');
+  if (r.success) loadTables();
+}
+
+async function removeTable(tableId) {
+  if (!confirm('Disable this table? It will no longer be assigned to bookings.')) return;
+  showLoading(true);
+  const r = await api('removeTable', { branchId: BRANCH_ID, tableId });
+  showLoading(false);
+  showToast(r.success ? 'Table disabled.' : r.error, r.success ? 'success' : 'error');
+  if (r.success) loadTables();
+}
+
+// ── BLOCKED DATES ──────────────────────────────────────────────
+async function loadBlockedDates() {
+  const data = await api('getBlockedDates', { branchId: BRANCH_ID });
+  if (!data.success) return;
+  BLOCKED = data.blockedDates || [];
+  document.getElementById('blockedList').innerHTML = BLOCKED.length
+    ? BLOCKED.map(d => `
+      <div class="blocked-item">
+        <div>
+          <div class="blocked-date">${fmtDate(d.date)}</div>
+          <div class="blocked-reason">${d.reason || 'No reason given'}</div>
+        </div>
+        <button class="btn btn-success btn-sm" onclick="unblockDate('${d.date}')">Unblock</button>
+      </div>`)
+      .join('')
+    : '<div class="empty-state"><span class="empty-ico">✅</span>No blocked dates</div>';
+}
+
+async function blockDate() {
+  const date   = document.getElementById('bd-date').value;
+  const reason = document.getElementById('bd-reason').value.trim();
+  if (!date) { showToast('Please select a date.', 'error'); return; }
+  showLoading(true);
+  const r = await api('blockDate', { branchId: BRANCH_ID, date, reason });
+  showLoading(false);
+  showToast(r.success ? 'Date blocked.' : r.error, r.success ? 'success' : 'error');
+  if (r.success) { document.getElementById('bd-date').value=''; document.getElementById('bd-reason').value=''; loadBlockedDates(); }
+}
+
+async function unblockDate(date) {
+  showLoading(true);
+  const r = await api('unblockDate', { branchId: BRANCH_ID, date });
+  showLoading(false);
+  showToast(r.success ? 'Date unblocked.' : r.error, r.success ? 'success' : 'error');
+  if (r.success) loadBlockedDates();
+}
+
+// ── QUICK ACTIONS ──────────────────────────────────────────────
+async function quickConfirm(reservationId) {
+  showLoading(true);
+  const r = await api('confirmReservation', { reservationId, branchId: BRANCH_ID });
+  showLoading(false);
+  showToast(r.success ? 'Reservation confirmed.' : r.error, r.success ? 'success' : 'error');
+  if (r.success) loadDashboard();
+}
+
+async function confirmAllPending() {
+  const pending = (DASHBOARD?.pendingReservations || []);
+  if (!pending.length) { showToast('No pending reservations.', 'error'); return; }
+  if (!confirm('Confirm all ' + pending.length + ' pending reservations?')) return;
+  showLoading(true);
+  for (const r of pending) { await api('confirmReservation', { reservationId: r.reservationId, branchId: BRANCH_ID }); }
+  showLoading(false);
+  showToast('All pending reservations confirmed.', 'success');
+  loadDashboard();
+}
+
+// ── SETTINGS ───────────────────────────────────────────────────
+function populateSettings(s) {
+  if (s.OPEN_TIME)          document.getElementById('bs-open').value     = s.OPEN_TIME;
+  if (s.CLOSE_TIME)         document.getElementById('bs-close').value    = s.CLOSE_TIME;
+  if (s.MAX_GUESTS)         document.getElementById('bs-guests').value   = s.MAX_GUESTS;
+  if (s.SLOT_INTERVAL_MINS) document.getElementById('bs-interval').value = s.SLOT_INTERVAL_MINS;
+  if (s.RESERVATION_MINS)   document.getElementById('bs-duration').value = s.RESERVATION_MINS;
+}
+
+// async function saveBranchSettings() {
+//   const settings = {
+//     OPEN_TIME:           document.getElementById('bs-open').value,
+//     CLOSE_TIME:          document.getElementById('bs-close').value,
+//     MAX_GUESTS:          document.getElementById('bs-guests').value,
+//     SLOT_INTERVAL_MINS:  document.getElementById('bs-interval').value,
+//     RESERVATION_MINS:    document.getElementById('bs-duration').value
+//   };
+//   showLoading(true);
+//   const r = await api('updateBranchSettings', { branchId: BRANCH_ID, settings });
+//   showLoading(false);
+//   showToast(r.success ? 'Branch settings saved.' : r.error, r.success ? 'success' : 'error');
+// }
+
+
+
+
+async function saveBranchSettings() {
+  // Put EVERYTHING inside this single settings object so your Apps Script can read it
+  const settings = {
+    OPEN_TIME:           document.getElementById('bs-open').value,
+    CLOSE_TIME:          document.getElementById('bs-close').value,
+    MAX_GUESTS:          document.getElementById('bs-guests').value,
+    SLOT_INTERVAL_MINS:  document.getElementById('bs-interval').value,
+    RESERVATION_MINS:    document.getElementById('bs-duration').value,
+    
+    // Adding the new fields INSIDE the settings object to satisfy validateRequired(body, ['settings'])
+    ACTIVE:              document.getElementById('bs-active') ? document.getElementById('bs-active').checked : true,
+    PHONE:               document.getElementById('bs-phone') ? document.getElementById('bs-phone').value.trim() : '',
+    ADDRESS:             document.getElementById('bs-address') ? document.getElementById('bs-address').value.trim() : ''
+  };
+
+  showLoading(true);
+  try {
+    // This matches exactly what your case block expects!
+    const r = await api('updateBranchSettings', { 
+      branchId: BRANCH_ID, 
+      settings: settings 
+    });
+    
+    if (r.success) {
+      showToast('Branch settings and details updated successfully!', 'success');
+      loadDashboard();
+    } else {
+      showToast('Error: ' + r.error, 'error');
+    }
+  } catch(e) {
+    showToast('Network error: ' + e.message, 'error');
+  } finally {
+    showLoading(false);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+function buildWeekSummary(data) {
+  const s = data.stats;
+  document.getElementById('weekSummary').innerHTML = `
+    <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--bdr);padding:6px 0;"><span>This Week's Bookings</span><strong class="text-gold">${s.thisWeekBookings}</strong></div>
+    <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--bdr);padding:6px 0;"><span>Confirmed</span><strong style="color:#66BB6A;">${s.totalActive}</strong></div>
+    <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--bdr);padding:6px 0;"><span>Pending</span><strong style="color:#FFA726;">${s.totalPending}</strong></div>
+    <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--bdr);padding:6px 0;"><span>Cancelled</span><strong style="color:#EF5350;">${s.totalCancelled}</strong></div>
+    <div style="display:flex;justify-content:space-between;padding:6px 0;"><span>Total Upcoming</span><strong>${s.upcomingCount}</strong></div>`;
+}
+
+// ── MODAL ──────────────────────────────────────────────────────
+function openModal(r) {
+  CURRENT_RES = r;
+  document.getElementById('modalTitle').textContent = 'Reservation — ' + r.reservationId;
+  document.getElementById('modalBody').innerHTML = `
+    <table style="width:100%;border-collapse:collapse;">
+      ${[['Customer',r.customerName||'—'],['Phone',`<a href="tel:${r.phone}">${r.phone||'—'}</a>`],
+         ['Date',fmtDate(r.reservationDate)],['Time',r.reservationTime||'—'],
+         ['Guests',r.guests||'—'],['Table(s)',fmtTables(r.assignedTables)],
+         ['Status',`<span class="badge badge-${r.status}">${r.status}</span>`],
+         ['Special Requests',r.specialRequests||'None'],
+         ['Created',fmtDate(r.createdAt)]
+        ].map(([l,v])=>`<tr><td style="padding:7px 0;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);width:36%;border-bottom:1px solid var(--bdr);">${l}</td><td style="padding:7px 0;font-size:13px;border-bottom:1px solid var(--bdr);">${v}</td></tr>`).join('')}
+    </table>`;
+  document.getElementById('cancelReasonWrap').style.display = 'none';
+  document.getElementById('btnConfirm').style.display = r.status === 'pending' ? 'inline-flex' : 'none';
+  document.getElementById('btnCancel').style.display  = r.status === 'cancelled' ? 'none' : 'inline-flex';
+  document.getElementById('btnCancelConfirm').style.display = 'none';
+  document.getElementById('resModal').classList.add('open');
+}
+
+function closeModal() { document.getElementById('resModal').classList.remove('open'); }
+
+function showCancelReason() {
+  document.getElementById('cancelReasonWrap').style.display = 'block';
+  document.getElementById('btnCancel').style.display = 'none';
+  document.getElementById('btnCancelConfirm').style.display = 'inline-flex';
+}
+
+async function doConfirm() {
+  if (!CURRENT_RES) return;
+  showLoading(true);
+  const r = await api('confirmReservation', { reservationId: CURRENT_RES.reservationId, branchId: BRANCH_ID });
+  showLoading(false);
+  showToast(r.success ? 'Confirmed.' : r.error, r.success ? 'success' : 'error');
+  if (r.success) { closeModal(); loadDashboard(); }
+}
+
+async function doCancel() {
+  if (!CURRENT_RES) return;
+  const reason = document.getElementById('cancelReason').value.trim() || 'Cancelled by manager';
+  showLoading(true);
+  const r = await api('cancelReservation', { reservationId: CURRENT_RES.reservationId, branchId: BRANCH_ID, reason });
+  showLoading(false);
+  showToast(r.success ? 'Reservation cancelled.' : r.error, r.success ? 'success' : 'error');
+  if (r.success) { closeModal(); loadDashboard(); }
+}
+
+// ── UTILITIES ──────────────────────────────────────────────────
+function showTab(name) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  if (event?.currentTarget) event.currentTarget.classList.add('active');
+  const titles = { today:"Today's Bookings", reservations:'All Reservations', upcoming:'Upcoming', tables:'Table Management', blocked:'Block Dates', settings:'Branch Settings' };
+  document.getElementById('pageTitle').textContent = titles[name] || name;
+}
+
+function setText(id, val) { const e=document.getElementById(id); if(e) e.textContent=val??'—'; }
+function fmtDate(v) { if(!v) return '—'; try{const d=new Date(v);return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear();}catch(e){return String(v);} }
+function fmtTables(v) { if(!v) return '—'; try{const a=typeof v==='string'?JSON.parse(v):v;return Array.isArray(a)?a.map(t=>t.name||t.tableId||t).join(', '):String(v);}catch(e){return String(v);} }
+function safeJson(obj) { return JSON.stringify(obj).replace(/'/g,"&#39;"); }
+function showLoading(v) { document.getElementById('loadingOverlay').classList.toggle('show', v); }
+function showToast(msg, type='success') {
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className='toast show '+type;
+  setTimeout(()=>{t.className='toast';},4000);
+}
+
+window.addEventListener('load', () => {
+  const saved = localStorage.getItem('ayr_mgr_token');
+  if (saved) { TOKEN = saved; loadDashboard(); }
+  document.getElementById('tokenInput').addEventListener('keydown', e => { if(e.key==='Enter') login(); });
+});
+</script>
+<script src="rreserveapi.js"></script>
+</body>
+</html>
