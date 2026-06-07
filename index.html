@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1"
+>
 <title>Owner Dashboard — Aha Yemi Ruchulu</title>
 <style>
 /* ── VARIABLES ── */
@@ -30,7 +33,7 @@ button{font-family:var(--font);cursor:pointer;}
 .login-logo{font-size:28px;font-weight:300;color:var(--gold);margin-bottom:6px;}
 .login-sub{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:40px;}
 .login-box h2{font-size:18px;font-weight:400;margin-bottom:24px;}
-.login-box input{text-align:center;letter-spacing:2px;font-size:13px;margin-bottom:16px;}
+.login-box input{text-align:center;letter-spacing:2px;font-size:16px;margin-bottom:16px;}
 .login-err{color:#E57373;font-size:12px;margin-top:8px;display:none;}
 /* ── LAYOUT ── */
 .app{display:none;min-height:100vh;}
@@ -58,7 +61,12 @@ button{font-family:var(--font);cursor:pointer;}
 .tab-panels .panel{display:none;}
 .tab-panels .panel.active{display:block;}
 /* ── STAT CARDS ── */
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;}
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+  margin-bottom:24px;
+}
 .stat-card{background:var(--surface);border:1px solid var(--bdr);padding:24px 20px;position:relative;overflow:hidden;}
 .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);opacity:0;transition:opacity .3s;}
 .stat-card:hover::before{opacity:1;}
@@ -67,7 +75,14 @@ button{font-family:var(--font);cursor:pointer;}
 .stat-sub{font-size:11px;color:var(--dim);margin-top:6px;}
 .stat-icon{position:absolute;right:16px;top:16px;font-size:22px;opacity:.25;}
 /* ── TABLES ── */
-.data-table-wrap{background:var(--surface);border:1px solid var(--bdr);overflow:hidden;}
+.data-table-wrap{
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+}
+
+.data-table{
+  min-width:900px;
+}
 .table-header{padding:16px 20px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;gap:12px;}
 .table-title{font-size:14px;font-weight:500;}
 .data-table{width:100%;border-collapse:collapse;}
@@ -155,15 +170,273 @@ button{font-family:var(--font);cursor:pointer;}
 .mt-16{margin-top:16px;}
 .section-divider{height:1px;background:var(--bdr);margin:24px 0;}
 @media(max-width:900px){
-  .sidebar{width:180px;}
-  .main-area{margin-left:180px;}
-  .stats-grid,.branch-grid,.three-col,.form-row{grid-template-columns:1fr 1fr;}
+
+.sidebar{
+  width:180px;
+}
+
+.main-area{
+  margin-left:180px;
+}
+
+.stats-grid{
+  grid-template-columns:repeat(2,1fr);
+}
+
+.branch-grid{
+  grid-template-columns:repeat(2,1fr);
+}
+
+.three-col,
+.form-row{
+  grid-template-columns:1fr;
+}
 }
 @media(max-width:640px){
-  .sidebar{display:none;}
   .main-area{margin-left:0;}
   .stats-grid,.branch-grid,.three-col,.two-col,.form-row{grid-template-columns:1fr;}
 }
+
+
+.mobile-menu-btn{
+  display:none;
+}
+
+@media(max-width:640px){
+
+  .mobile-menu-btn{
+    display:block;
+    position:absolute;
+    right:12px;
+    top:12px;
+    background:none;
+    border:none;
+    color:var(--gold);
+    font-size:26px;
+    z-index:10001;
+  }
+
+  .sidebar{
+    display:flex;
+    position:fixed;
+    top:0;
+    left:-260px;
+    width:240px;
+    height:100vh;
+    transition:left .3s ease;
+    z-index:10000;
+  }
+
+  .sidebar.open{
+    left:0;
+  }
+
+  .main-area{
+    margin-left:0;
+  }
+
+  .topbar{
+    position:relative;
+  }
+
+  .stats-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+  }
+
+  .branch-grid{
+    grid-template-columns:1fr;
+  }
+
+  .page-content{
+    padding:12px;
+  }
+}
+/* =========================================
+   MOBILE DASHBOARD OPTIMIZATION
+========================================= */
+
+@media (max-width:768px){
+
+body{
+  font-size:13px;
+}
+
+/* Page spacing */
+
+.page-content{
+  padding:12px;
+}
+
+/* Top bar */
+
+.topbar{
+  padding:12px;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:12px;
+}
+
+.topbar-title{
+  font-size:18px;
+}
+
+.topbar-actions{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.topbar-actions .btn{
+  width:100%;
+}
+
+/* Stats */
+
+.stats-grid{
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.stat-card{
+  padding:16px;
+}
+
+.stat-value{
+  font-size:24px;
+}
+
+.stat-icon{
+  font-size:18px;
+}
+
+/* Branch cards */
+
+.branch-grid{
+  grid-template-columns:1fr;
+  gap:12px;
+}
+
+.branch-card{
+  padding:16px;
+}
+
+/* Forms */
+
+.form-row{
+  grid-template-columns:1fr;
+  gap:10px;
+}
+
+.card{
+  padding:16px;
+}
+
+input,
+select,
+textarea{
+  min-height:48px;
+  font-size:16px; /* prevents iPhone zoom */
+}
+
+/* Filters */
+
+.filter-row{
+  flex-direction:column;
+  align-items:stretch;
+}
+
+.filter-row > *{
+  width:100% !important;
+  max-width:none !important;
+}
+
+.search-bar{
+  max-width:none;
+}
+
+/* Tables */
+
+.data-table{
+  min-width:900px;
+}
+
+.data-table th,
+.data-table td{
+  padding:10px;
+  white-space:nowrap;
+}
+
+.data-table-wrap{
+  overflow:hidden;
+}
+
+.data-table-wrap > div:last-child{
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+}
+
+/* Trend chart */
+
+.trend-wrap{
+  padding:16px;
+}
+
+.trend-bars{
+  height:90px;
+  gap:4px;
+}
+
+.trend-lbl{
+  font-size:8px;
+}
+
+/* Modal */
+
+.modal{
+  width:100%;
+  max-width:none;
+  padding:20px;
+  max-height:90vh;
+  overflow:auto;
+}
+
+.modal-footer{
+  flex-direction:column;
+}
+
+.modal-footer .btn{
+  width:100%;
+}
+
+/* Toast */
+
+.toast{
+  left:12px;
+  right:12px;
+  bottom:12px;
+  width:auto;
+}
+
+/* Login */
+
+.login-box{
+  padding:32px 24px;
+}
+
+.login-logo{
+  font-size:24px;
+}
+
+/* Buttons */
+
+.btn{
+  min-height:44px;
+}
+}
+
 </style>
 </head>
 <body>
@@ -178,7 +451,7 @@ button{font-family:var(--font);cursor:pointer;}
     <h2>Enter Your Access Token</h2>
     <input type="password" id="tokenInput" placeholder="Paste owner token here…" autocomplete="off">
     <div class="login-err" id="loginErr">Invalid token. Please try again.</div>
-    <button class="btn btn-gold" style="width:100%;margin-top:16px;" onclick="login()">Access Dashboard</button>
+    <button type="button" class="btn btn-gold" style="width:100%;margin-top:16px;" onclick="login()">Access Dashboard</button>
     <p style="margin-top:20px;font-size:11px;color:var(--dim);">Your token was generated during system setup.<br>Contact system administrator if you need access.</p>
   </div>
 </div>
@@ -190,28 +463,39 @@ button{font-family:var(--font);cursor:pointer;}
       <div class="sidebar-logo-sub">Owner Dashboard</div>
     </div>
     <nav class="sidebar-nav">
-      <button class="nav-item active" onclick="showTab('overview')"><span class="nav-item-icon">📊</span>Overview</button>
-      <button class="nav-item" onclick="showTab('reservations')"><span class="nav-item-icon">📅</span>All Reservations</button>
-      <button class="nav-item" onclick="showTab('branches')"><span class="nav-item-icon">🏪</span>Branches</button>
-      <button class="nav-item" onclick="showTab('managers')"><span class="nav-item-icon">👤</span>Managers</button>
-      <button class="nav-item" onclick="showTab('franchise')"><span class="nav-item-icon">💼</span>Franchise Leads</button>
-      <button class="nav-item" onclick="showTab('catering')"><span class="nav-item-icon">🚚</span>Catering Requests</button>
-      <button class="nav-item" onclick="showTab('settings')"><span class="nav-item-icon">⚙</span>Settings</button>
+      <button class="nav-item active" type="button" onclick="showTab('overview')"><span class="nav-item-icon">📊</span>Overview</button>
+      <button class="nav-item" type="button" onclick="showTab('reservations')"><span class="nav-item-icon">📅</span>All Reservations</button>
+      <button class="nav-item" type="button" onclick="showTab('branches')"><span class="nav-item-icon">🏪</span>Branches</button>
+      <button class="nav-item" type="button" onclick="showTab('managers')"><span class="nav-item-icon">👤</span>Managers</button>
+      <button class="nav-item" type="button" onclick="showTab('franchise')"><span class="nav-item-icon">💼</span>Franchise Leads</button>
+      <button class="nav-item" type="button" onclick="showTab('catering')"><span class="nav-item-icon">🚚</span>Catering Requests</button>
+      <button class="nav-item" type="button" onclick="showTab('settings')"><span class="nav-item-icon">⚙</span>Settings</button>
     </nav>
     <div class="sidebar-footer">
       <p id="lastRefresh">—</p>
       <button class="btn btn-outline btn-sm" style="width:100%;margin-top:8px;" onclick="logout()">Sign Out</button>
     </div>
   </aside>
-
   <main class="main-area">
+
     <div class="topbar">
-      <div class="topbar-title" id="pageTitle">Overview</div>
-      <div class="topbar-actions">
-        <button class="btn btn-outline btn-sm" onclick="loadDashboard()">⟳ Refresh</button>
-        <button class="btn btn-gold btn-sm" onclick="showTab('reservations')">View Reservations</button>
+  
+      <div class="topbar-title" id="pageTitle">
+        Overview
       </div>
+  
+      <button
+        id="mobileMenuBtn"
+        class="mobile-menu-btn"
+        onclick="toggleMobileMenu()"
+      >
+        ☰
+      </button>
+  
+      <div class="topbar-actions"></div>
+  
     </div>
+  
 
     <div class="page-content">
     <div class="tab-panels">
@@ -492,32 +776,6 @@ let BRANCHES = [];
 let currentModalRes = null;
 
 // ── NAVIGATION TAB MECHANISM ──────────────────
-function showTab(name) {
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-
-  document.getElementById('panel-' + name)?.classList.add('active');
-
-  const activeBtn = document.querySelector(
-    `.nav-item[onclick="showTab('${name}')"]`
-  );
-
-  if (activeBtn) activeBtn.classList.add('active');
-
-  const titles = {
-    overview:'Overview',
-    reservations:'All Reservations',
-    branches:'Branch Management',
-    managers:'Manager Management',
-    settings:'Settings',
-    franchise:'Franchise Inquiries',
-    catering:'Catering Requests'
-  };
-
-  document.getElementById('pageTitle').textContent =
-    titles[name] || name;
-}
-// ── AUTH ──────────────────────────────────
 function login() {
   const t = document.getElementById('tokenInput').value.trim();
   if (!t) return;
@@ -525,7 +783,6 @@ function login() {
   sessionStorage.setItem('ownerToken', t);
   loadDashboard();
 }
-
 // ── LEAVE BLANK OR IMPLEMENT LOGOUT ───────
 function logout() {
   sessionStorage.removeItem('ownerToken');
@@ -694,7 +951,7 @@ function populateAllRes(res) {
       <td>${r.guests || '—'}</td>
       <td style="font-size:11px;">${fmtTables(r.assignedTables)}</td>
       <td><span class="badge badge-${r.status}">${r.status}</span></td>
-      <td><button class="btn btn-outline btn-sm" onclick=onclick="openReservation('${r.reservationId}')"'>View</button></td>
+      <td><button type="button" class="btn btn-outline btn-sm"  onclick="openReservation('${r.reservationId}')">View</button></td>
     </tr>`).join('') || '<tr><td colspan="10" class="empty-state">No reservations found</td></tr>';
 }
 function openReservation(id){
@@ -1102,7 +1359,6 @@ function openModal(r) {
         ['Date', fmtDate(r.reservationDate)],
         ['Time', r.reservationTime || '—'],
         ['Guests', r.guests || '—'],
-        ['Time', fmtTime(r.reservationTime)],
         ['Status', `<span class="badge badge-${r.status}">${r.status}</span>`],
         ['Special Requests', r.specialRequests || 'None'],
         ['Created At', fmtDate(r.createdAt)]
@@ -1218,11 +1474,63 @@ function fmtTables(t) {
     return String(t);
   }
 }
+
 function showToast(msg, type='success') { const t=document.getElementById('toast'); t.textContent=msg; t.className='toast show '+type; setTimeout(()=>t.classList.remove('show'),3000); }
 function closeModal() { document.getElementById('resModal').classList.remove('open'); }
+function showTab(name){
 
+  document
+    .querySelectorAll('.panel')
+    .forEach(p => p.classList.remove('active'));
+
+  document
+    .querySelectorAll('.nav-item')
+    .forEach(n => n.classList.remove('active'));
+
+  document
+    .getElementById('panel-' + name)
+    ?.classList.add('active');
+
+  const activeBtn = document.querySelector(
+    `.nav-item[onclick="showTab('${name}')"]`
+  );
+
+  if(activeBtn){
+    activeBtn.classList.add('active');
+  }
+  if(window.innerWidth <= 640){
+
+document
+  .querySelector('.sidebar')
+  .classList.remove('open');
+
+}
+  window.scrollTo({
+    top:0,
+    behavior:'smooth'
+  });
+
+  document.getElementById('pageTitle').textContent =
+    {
+      overview:'Overview',
+      reservations:'All Reservations',
+      branches:'Branch Management',
+      managers:'Manager Management',
+      settings:'Settings',
+      franchise:'Franchise Inquiries',
+      catering:'Catering Requests'
+    }[name] || name;
+}
 // Run automatically on load if token exists
+function toggleMobileMenu(){
+
+document
+  .querySelector('.sidebar')
+  .classList.toggle('open');
+
+}
 window.addEventListener('DOMContentLoaded', () => {
+   
   if (savedToken) {
     TOKEN = savedToken;
     document.getElementById('tokenInput').value = savedToken;
