@@ -2,441 +2,353 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1"
->
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Owner Dashboard — Aha Yemi Ruchulu</title>
 <style>
 /* ── VARIABLES ── */
 :root{
-  --bg:#07060A; --bg2:#0E0C12; --surface:#141218; --surface2:#1A1820;
-  --gold:#C79A3B; --gold-lt:#D4A843; --text:#F5F3EF;
-  --muted:rgba(245,243,239,.5); --dim:rgba(245,243,239,.22);
-  --bdr:rgba(199,154,59,.16); --bdr2:rgba(199,154,59,.35);
-  --green:#2E7D32; --red:#8C1D18; --amber:#E65100;
-  --font:'Segoe UI',system-ui,sans-serif;
-  --rad:4px;
+  --bg:#07060A;--bg2:#0E0C12;--surface:#141218;--surface2:#1A1820;
+  --gold:#C79A3B;--gold-lt:#D4A843;--text:#F5F3EF;
+  --muted:rgba(245,243,239,.5);--dim:rgba(245,243,239,.22);
+  --bdr:rgba(199,154,59,.16);--bdr2:rgba(199,154,59,.35);
+  --font:'Segoe UI',system-ui,sans-serif;--rad:4px;
+  --sidebar-w:220px;--topbar-h:60px;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;font-size:14px;}
+html{font-size:14px;}
+body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;-webkit-font-smoothing:antialiased;}
 a{color:var(--gold);text-decoration:none;}
-input,select,textarea{background:rgba(199,154,59,.05);border:1px solid var(--bdr);color:var(--text);
-  padding:10px 14px;font-size:13px;font-family:var(--font);outline:none;width:100%;border-radius:var(--rad);}
+input,select,textarea{
+  background:rgba(199,154,59,.05);border:1px solid var(--bdr);color:var(--text);
+  padding:10px 14px;font-size:13px;font-family:var(--font);outline:none;
+  width:100%;border-radius:var(--rad);
+}
 input:focus,select:focus,textarea:focus{border-color:var(--gold);}
 input::placeholder,textarea::placeholder{color:var(--dim);}
 select option{background:#1A1820;}
 button{font-family:var(--font);cursor:pointer;}
-/* ── LOGIN ── */
-.login-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px;}
-.login-box{background:var(--surface);border:1px solid var(--bdr);padding:52px 48px;width:100%;max-width:440px;text-align:center;}
-.login-logo{font-size:28px;font-weight:300;color:var(--gold);margin-bottom:6px;}
-.login-sub{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:40px;}
-.login-box h2{font-size:18px;font-weight:400;margin-bottom:24px;}
-.login-box input{text-align:center;letter-spacing:2px;font-size:16px;margin-bottom:16px;}
+
+/* ══ LOGIN ══ */
+.login-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;}
+.login-box{
+  background:var(--surface);border:1px solid var(--bdr);
+  padding:48px 44px;width:100%;max-width:420px;text-align:center;
+}
+.login-logo{font-size:26px;font-weight:300;color:var(--gold);margin-bottom:6px;}
+.login-sub{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:36px;}
+.login-box h2{font-size:17px;font-weight:400;margin-bottom:20px;}
+.login-box input{text-align:center;letter-spacing:2px;margin-bottom:14px;}
 .login-err{color:#E57373;font-size:12px;margin-top:8px;display:none;}
-/* ── LAYOUT ── */
-.app{display:none;min-height:100vh;}
-.app.show{display:flex;}
-.sidebar{width:220px;background:var(--bg2);border-right:1px solid var(--bdr);
-  display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;}
-.sidebar-logo{padding:24px 20px;border-bottom:1px solid var(--bdr);}
-.sidebar-logo-name{font-size:15px;font-weight:600;color:var(--text);}
-.sidebar-logo-sub{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-top:2px;}
-.sidebar-nav{flex:1;padding:20px 12px;display:flex;flex-direction:column;gap:2px;}
-.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--rad);
-  color:var(--muted);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;border:none;background:none;width:100%;text-align:left;}
+
+/* ══ APP SHELL ══ */
+.app{display:none;}
+.app.show{display:block;}
+
+/* ══ SIDEBAR ══ */
+.sidebar{
+  width:var(--sidebar-w);background:var(--bg2);
+  border-right:1px solid var(--bdr);
+  display:flex;flex-direction:column;
+  position:fixed;top:0;left:0;bottom:0;z-index:200;
+}
+.sidebar-logo{padding:20px 18px;border-bottom:1px solid var(--bdr);}
+.sidebar-logo-name{font-size:14px;font-weight:600;}
+.sidebar-logo-sub{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-top:3px;}
+.sidebar-nav{flex:1;padding:16px 10px;display:flex;flex-direction:column;gap:2px;overflow-y:auto;}
+.nav-item{
+  display:flex;align-items:center;gap:10px;padding:10px 12px;
+  border-radius:var(--rad);color:var(--muted);font-size:13px;font-weight:500;
+  cursor:pointer;transition:all .2s;border:none;background:none;
+  width:100%;text-align:left;
+}
 .nav-item:hover{background:rgba(199,154,59,.07);color:var(--text);}
 .nav-item.active{background:rgba(199,154,59,.12);color:var(--gold);}
-.nav-item-icon{font-size:16px;width:20px;text-align:center;}
-.sidebar-footer{padding:16px 20px;border-top:1px solid var(--bdr);}
+.nav-item-icon{font-size:15px;width:20px;text-align:center;flex-shrink:0;}
+.sidebar-footer{padding:14px 18px;border-top:1px solid var(--bdr);}
 .sidebar-footer p{font-size:11px;color:var(--dim);}
-.main-area{margin-left:220px;flex:1;display:flex;flex-direction:column;}
-.topbar{background:var(--bg2);border-bottom:1px solid var(--bdr);padding:16px 28px;
-  display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
-.topbar-title{font-size:16px;font-weight:500;}
-.topbar-actions{display:flex;gap:10px;align-items:center;}
-.page-content{padding:28px;flex:1;}
-/* ── TABS ── */
+
+/* ══ SIDEBAR BACKDROP (mobile only) ══ */
+.sidebar-backdrop{
+  display:none;position:fixed;inset:0;
+  background:rgba(7,6,10,.7);z-index:199;
+  backdrop-filter:blur(2px);
+}
+
+/* ══ MAIN AREA ══ */
+.main-area{margin-left:var(--sidebar-w);min-height:100vh;display:flex;flex-direction:column;}
+
+/* ══ TOPBAR ══ */
+.topbar{
+  height:var(--topbar-h);
+  background:var(--bg2);border-bottom:1px solid var(--bdr);
+  padding:0 24px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  position:sticky;top:0;z-index:100;
+}
+.topbar-title{font-size:15px;font-weight:500;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.topbar-actions{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+
+/* Hamburger — hidden on desktop */
+.hamburger-btn{
+  display:none;
+  background:none;border:none;
+  color:var(--gold);font-size:22px;
+  width:36px;height:36px;
+  align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+
+/* ══ PAGE CONTENT ══ */
+.page-content{padding:24px;flex:1;}
+
+/* ══ TAB SYSTEM ══ */
 .tab-panels .panel{display:none;}
 .tab-panels .panel.active{display:block;}
-/* ── STAT CARDS ── */
+
+/* ══ STAT GRID ══ */
 .stats-grid{
   display:grid;
   grid-template-columns:repeat(4,1fr);
-  gap:16px;
-  margin-bottom:24px;
+  gap:14px;margin-bottom:22px;
 }
-.stat-card{background:var(--surface);border:1px solid var(--bdr);padding:24px 20px;position:relative;overflow:hidden;}
-.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);opacity:0;transition:opacity .3s;}
+.stat-card{
+  background:var(--surface);border:1px solid var(--bdr);
+  padding:20px 16px;position:relative;overflow:hidden;
+  transition:border-color .3s;
+}
+.stat-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--gold);opacity:0;transition:opacity .3s;
+}
 .stat-card:hover::before{opacity:1;}
-.stat-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
-.stat-value{font-size:32px;font-weight:300;color:var(--gold);line-height:1;}
-.stat-sub{font-size:11px;color:var(--dim);margin-top:6px;}
-.stat-icon{position:absolute;right:16px;top:16px;font-size:22px;opacity:.25;}
-/* ── TABLES ── */
-.data-table-wrap{
-  overflow-x:auto;
-  -webkit-overflow-scrolling:touch;
-}
+.stat-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.stat-value{font-size:30px;font-weight:300;color:var(--gold);line-height:1;}
+.stat-sub{font-size:11px;color:var(--dim);margin-top:5px;}
+.stat-icon{position:absolute;right:12px;top:12px;font-size:20px;opacity:.2;}
 
-.data-table{
-  min-width:900px;
+/* ══ DATA TABLE ══ */
+.data-table-wrap{background:var(--surface);border:1px solid var(--bdr);overflow:hidden;margin-bottom:20px;}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.table-header{
+  padding:14px 18px;border-bottom:1px solid var(--bdr);
+  display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
 }
-.table-header{padding:16px 20px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;gap:12px;}
-.table-title{font-size:14px;font-weight:500;}
-.data-table{width:100%;border-collapse:collapse;}
-.data-table th{padding:10px 16px;text-align:left;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;
-  color:var(--muted);border-bottom:1px solid var(--bdr);background:var(--bg2);font-weight:600;}
-.data-table td{padding:12px 16px;border-bottom:1px solid rgba(199,154,59,.06);font-size:13px;color:var(--text);vertical-align:middle;}
+.table-title{font-size:13px;font-weight:500;}
+.data-table{width:100%;border-collapse:collapse;min-width:700px;}
+.data-table th{
+  padding:9px 14px;text-align:left;font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--bdr);
+  background:var(--bg2);font-weight:600;white-space:nowrap;
+}
+.data-table td{
+  padding:11px 14px;border-bottom:1px solid rgba(199,154,59,.05);
+  font-size:13px;vertical-align:middle;
+}
 .data-table tr:last-child td{border-bottom:none;}
-.data-table tr:hover td{background:rgba(199,154,59,.04);}
-/* ── BADGES ── */
-.badge{display:inline-block;padding:3px 10px;border-radius:2px;font-size:10px;letter-spacing:1px;text-transform:uppercase;font-weight:600;}
+.data-table tr:hover td{background:rgba(199,154,59,.035);}
+
+/* ══ BADGES ══ */
+.badge{display:inline-block;padding:3px 9px;border-radius:2px;font-size:10px;letter-spacing:1px;text-transform:uppercase;font-weight:600;}
 .badge-confirmed{background:rgba(46,125,50,.2);color:#66BB6A;}
 .badge-pending{background:rgba(230,81,0,.2);color:#FFA726;}
 .badge-cancelled{background:rgba(140,29,24,.2);color:#EF5350;}
 .badge-completed{background:rgba(21,101,192,.2);color:#42A5F5;}
-/* ── BUTTONS ── */
-.btn{padding:8px 18px;border:none;font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;border-radius:var(--rad);transition:all .2s;}
+
+/* ══ BUTTONS ══ */
+.btn{
+  padding:8px 16px;border:none;font-size:12px;font-weight:600;
+  letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;
+  border-radius:var(--rad);transition:all .2s;
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+}
 .btn-gold{background:var(--gold);color:#0B0B0B;}
 .btn-gold:hover{background:var(--gold-lt);}
 .btn-outline{background:transparent;border:1px solid var(--bdr2);color:var(--gold);}
 .btn-outline:hover{background:rgba(199,154,59,.08);}
 .btn-danger{background:transparent;border:1px solid rgba(140,29,24,.4);color:#EF5350;}
-.btn-danger:hover{background:rgba(140,29,24,.15);}
+.btn-danger:hover{background:rgba(140,29,24,.12);}
 .btn-success{background:transparent;border:1px solid rgba(46,125,50,.4);color:#66BB6A;}
-.btn-success:hover{background:rgba(46,125,50,.15);}
+.btn-success:hover{background:rgba(46,125,50,.12);}
 .btn-sm{padding:5px 12px;font-size:11px;}
-/* ── SEARCH BAR ── */
-.search-bar{position:relative;max-width:280px;flex:1;}
-.search-bar input{padding-left:36px;}
-.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--dim);font-size:14px;pointer-events:none;}
-/* ── FILTER ROW ── */
-.filter-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
-.filter-row select{width:auto;min-width:140px;}
-/* ── SECTION GRID ── */
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
-.three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
-/* ── FORM ── */
-.form-group{margin-bottom:16px;}
+
+/* ══ FILTER ROW ══ */
+.filter-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px;}
+.search-bar{position:relative;flex:1;min-width:200px;max-width:300px;}
+.search-bar input{padding-left:34px;}
+.search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--dim);font-size:13px;pointer-events:none;}
+.filter-row select{width:auto;min-width:130px;}
+.filter-row input[type=date]{width:auto;min-width:150px;}
+
+/* ══ LAYOUT HELPERS ══ */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.section-gap{margin-bottom:20px;}
+.section-title{font-size:14px;font-weight:500;margin-bottom:14px;}
+
+/* ══ FORM ══ */
+.form-group{margin-bottom:14px;}
 .form-label{display:block;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.card{background:var(--surface);border:1px solid var(--bdr);padding:24px;}
-.card-title{font-size:14px;font-weight:500;margin-bottom:18px;color:var(--text);}
-/* ── BRANCH CARDS ── */
-.branch-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;}
-.branch-card{background:var(--surface);border:1px solid var(--bdr);padding:22px;position:relative;}
-.branch-card-name{font-size:16px;font-weight:500;margin-bottom:4px;}
-.branch-card-addr{font-size:12px;color:var(--muted);margin-bottom:14px;}
-.branch-stat{display:flex;justify-content:space-between;font-size:12px;padding:6px 0;border-bottom:1px solid rgba(199,154,59,.06);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.card{background:var(--surface);border:1px solid var(--bdr);padding:22px;}
+.card-title{font-size:14px;font-weight:500;margin-bottom:16px;}
+
+/* ══ BRANCH CARDS ══ */
+.branch-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px;}
+.branch-card{background:var(--surface);border:1px solid var(--bdr);padding:20px;position:relative;transition:border-color .3s;}
+.branch-card:hover{border-color:var(--bdr2);}
+.branch-card-name{font-size:15px;font-weight:500;margin-bottom:4px;}
+.branch-badge{position:absolute;top:12px;right:12px;font-size:9px;letter-spacing:2px;text-transform:uppercase;background:rgba(199,154,59,.12);color:var(--gold);padding:3px 10px;}
+.branch-stat{display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px solid rgba(199,154,59,.06);}
 .branch-stat:last-child{border-bottom:none;}
 .branch-stat-label{color:var(--muted);}
-.branch-stat-val{color:var(--text);font-weight:500;}
-.branch-badge{position:absolute;top:14px;right:14px;font-size:9px;letter-spacing:2px;text-transform:uppercase;background:rgba(199,154,59,.12);color:var(--gold);padding:3px 10px;}
-/* ── TREND CHART ── */
-.trend-wrap{background:var(--surface);border:1px solid var(--bdr);padding:24px;margin-bottom:24px;}
-.trend-title{font-size:13px;font-weight:500;margin-bottom:18px;}
-.trend-bars{display:flex;align-items:flex-end;gap:6px;height:100px;}
-.trend-bar-col{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;}
+.branch-stat-val{font-weight:500;}
+
+/* ══ TREND CHART ══ */
+.trend-wrap{background:var(--surface);border:1px solid var(--bdr);padding:20px;margin-bottom:20px;}
+.trend-title{font-size:13px;font-weight:500;margin-bottom:14px;}
+.trend-bars{display:flex;align-items:flex-end;gap:5px;height:90px;}
+.trend-bar-col{display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;}
 .trend-bar{background:rgba(199,154,59,.25);width:100%;border-radius:2px 2px 0 0;transition:all .3s;min-height:4px;}
 .trend-bar:hover{background:var(--gold);}
 .trend-lbl{font-size:9px;color:var(--dim);text-align:center;}
 .trend-num{font-size:9px;color:var(--muted);text-align:center;}
-/* ── MODAL ── */
-.modal-overlay{position:fixed;inset:0;background:rgba(7,6,10,.85);z-index:1000;display:flex;align-items:center;justify-content:center;padding:24px;display:none;}
+
+/* ══ MODAL ══ */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(7,6,10,.88);
+  z-index:1000;display:none;align-items:center;
+  justify-content:center;padding:16px;
+}
 .modal-overlay.open{display:flex;}
-.modal{background:var(--surface);border:1px solid var(--bdr2);padding:36px;width:100%;max-width:500px;}
-.modal-title{font-size:18px;font-weight:400;margin-bottom:20px;}
-.modal-footer{display:flex;gap:10px;justify-content:flex-end;margin-top:24px;}
-/* ── LOADING ── */
-.spinner{width:20px;height:20px;border:2px solid var(--bdr);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite;display:inline-block;}
+.modal{background:var(--surface);border:1px solid var(--bdr2);padding:28px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;}
+.modal-title{font-size:17px;font-weight:400;margin-bottom:18px;}
+.modal-footer{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;flex-wrap:wrap;}
+
+/* ══ LOADING / TOAST ══ */
+.spinner{width:20px;height:20px;border:2px solid var(--bdr);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
-.loading-overlay{display:none;position:fixed;inset:0;background:rgba(7,6,10,.5);z-index:500;align-items:center;justify-content:center;}
+.loading-overlay{display:none;position:fixed;inset:0;background:rgba(7,6,10,.55);z-index:500;align-items:center;justify-content:center;}
 .loading-overlay.show{display:flex;}
-/* ── TOAST ── */
-.toast{position:fixed;bottom:28px;right:28px;background:var(--surface2);border:1px solid var(--bdr2);
-  padding:14px 22px;font-size:13px;z-index:2000;opacity:0;transform:translateY(10px);transition:all .3s;}
+.toast{
+  position:fixed;bottom:20px;right:20px;
+  background:var(--surface2);border:1px solid var(--bdr2);
+  padding:12px 20px;font-size:13px;z-index:2000;
+  opacity:0;transform:translateY(8px);transition:all .3s;
+  border-radius:var(--rad);max-width:calc(100vw - 40px);
+}
 .toast.show{opacity:1;transform:translateY(0);}
 .toast.success{border-color:rgba(46,125,50,.5);color:#66BB6A;}
 .toast.error{border-color:rgba(140,29,24,.5);color:#EF5350;}
-/* ── MISC ── */
-.section-gap{margin-bottom:24px;}
-.empty-state{text-align:center;padding:48px;color:var(--dim);}
-.empty-state span{font-size:32px;display:block;margin-bottom:10px;}
+
+/* ══ MISC ══ */
 .text-gold{color:var(--gold);}
 .text-muted{color:var(--muted);}
-.flex{display:flex;align-items:center;gap:8px;}
+.empty-state{text-align:center;padding:40px;color:var(--dim);}
+.empty-state span{font-size:28px;display:block;margin-bottom:8px;}
 .mt-16{margin-top:16px;}
-.section-divider{height:1px;background:var(--bdr);margin:24px 0;}
+
+/* ════════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════════ */
+
+/* ── LARGE TABLET: 901-1200px ── */
+@media(max-width:1200px){
+  .stats-grid{grid-template-columns:repeat(4,1fr);}
+  .branch-grid{grid-template-columns:repeat(2,1fr);}
+}
+
+/* ── TABLET: 641-900px ── */
 @media(max-width:900px){
-
-.sidebar{
-  width:180px;
+  :root{--sidebar-w:190px;}
+  .stats-grid{grid-template-columns:repeat(2,1fr);}
+  .three-col{grid-template-columns:1fr 1fr;}
+  .branch-grid{grid-template-columns:1fr 1fr;}
+  .page-content{padding:18px;}
 }
 
-.main-area{
-  margin-left:180px;
-}
-
-.stats-grid{
-  grid-template-columns:repeat(2,1fr);
-}
-
-.branch-grid{
-  grid-template-columns:repeat(2,1fr);
-}
-
-.three-col,
-.form-row{
-  grid-template-columns:1fr;
-}
-}
-@media(max-width:640px){
-  .main-area{margin-left:0;}
-  .stats-grid,.branch-grid,.three-col,.two-col,.form-row{grid-template-columns:1fr;}
-}
-
-
-.mobile-menu-btn{
-  display:none;
-}
-
+/* ── MOBILE: ≤640px ── */
 @media(max-width:640px){
 
-  .mobile-menu-btn{
-    display:block;
-    position:absolute;
-    right:12px;
-    top:12px;
-    background:none;
-    border:none;
-    color:var(--gold);
-    font-size:26px;
-    z-index:10001;
-  }
-
+  /* Sidebar slides in from left */
   .sidebar{
-    display:flex;
-    position:fixed;
-    top:0;
     left:-260px;
-    width:240px;
-    height:100vh;
-    transition:left .3s ease;
-    z-index:10000;
+    width:250px;
+    transition:left .28s cubic-bezier(.16,1,.3,1);
+    box-shadow:none;
   }
-
   .sidebar.open{
     left:0;
+    box-shadow:8px 0 40px rgba(0,0,0,.6);
   }
 
-  .main-area{
-    margin-left:0;
-  }
+  /* Backdrop visible when sidebar open */
+  .sidebar-backdrop.open{display:block;}
 
+  /* Main area no left margin */
+  .main-area{margin-left:0;}
+
+  /* Topbar: single row, no stacking */
   .topbar{
-    position:relative;
+    padding:0 14px;
+    flex-direction:row !important;
+    height:56px;
   }
+  .topbar-title{font-size:15px;}
+  .topbar-actions{display:none;} /* hide desktop buttons on mobile */
 
-  .stats-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:10px;
-  }
+  /* Hamburger visible */
+  .hamburger-btn{display:inline-flex;}
 
-  .branch-grid{
-    grid-template-columns:1fr;
-  }
+  /* Page content */
+  .page-content{padding:14px 12px;}
 
-  .page-content{
-    padding:12px;
-  }
-}
-/* =========================================
-   MOBILE DASHBOARD OPTIMIZATION
-========================================= */
+  /* Stats: 2 columns */
+  .stats-grid{grid-template-columns:1fr 1fr;gap:10px;}
+  .stat-card{padding:14px 12px;}
+  .stat-value{font-size:24px;}
+  .stat-icon{display:none;}
 
-@media (max-width:768px){
+  /* Branch grid: 1 column */
+  .branch-grid{grid-template-columns:1fr;}
 
-body{
-  font-size:13px;
-}
+  /* Two-col → single col */
+  .two-col,.three-col,.form-row{grid-template-columns:1fr;}
 
-/* Page spacing */
+  /* Cards */
+  .card{padding:16px 14px;}
+  .card-title{font-size:13px;}
 
-.page-content{
-  padding:12px;
-}
+  /* Filters stack cleanly */
+  .filter-row{flex-direction:column;align-items:stretch;}
+  .filter-row > *{width:100% !important;max-width:none !important;min-width:0 !important;}
+  .search-bar{max-width:none;}
 
-/* Top bar */
+  /* Inputs: 16px prevents iOS auto-zoom */
+  input,select,textarea{font-size:16px;min-height:44px;}
 
-.topbar{
-  padding:12px;
-  flex-direction:column;
-  align-items:flex-start;
-  gap:12px;
-}
+  /* Trend chart */
+  .trend-wrap{padding:14px;}
+  .trend-bars{height:70px;gap:3px;}
+  .trend-lbl{font-size:8px;}
+  .trend-num{font-size:8px;}
 
-.topbar-title{
-  font-size:18px;
-}
+  /* Modal: full width */
+  .modal{padding:20px 16px;max-height:85vh;}
+  .modal-footer{flex-direction:column;}
+  .modal-footer .btn{width:100%;justify-content:center;}
 
-.topbar-actions{
-  width:100%;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
+  /* Table wrapper */
+  .data-table-wrap{border-radius:0;}
 
-.topbar-actions .btn{
-  width:100%;
+  /* Sidebar footer */
+  .sidebar-footer p{font-size:10px;}
 }
 
-/* Stats */
-
-.stats-grid{
-  grid-template-columns:1fr 1fr;
-  gap:10px;
+/* ── VERY SMALL: ≤380px ── */
+@media(max-width:380px){
+  .stats-grid{grid-template-columns:1fr;}
+  .topbar-title{font-size:13px;}
 }
-
-.stat-card{
-  padding:16px;
-}
-
-.stat-value{
-  font-size:24px;
-}
-
-.stat-icon{
-  font-size:18px;
-}
-
-/* Branch cards */
-
-.branch-grid{
-  grid-template-columns:1fr;
-  gap:12px;
-}
-
-.branch-card{
-  padding:16px;
-}
-
-/* Forms */
-
-.form-row{
-  grid-template-columns:1fr;
-  gap:10px;
-}
-
-.card{
-  padding:16px;
-}
-
-input,
-select,
-textarea{
-  min-height:48px;
-  font-size:16px; /* prevents iPhone zoom */
-}
-
-/* Filters */
-
-.filter-row{
-  flex-direction:column;
-  align-items:stretch;
-}
-
-.filter-row > *{
-  width:100% !important;
-  max-width:none !important;
-}
-
-.search-bar{
-  max-width:none;
-}
-
-/* Tables */
-
-.data-table{
-  min-width:900px;
-}
-
-.data-table th,
-.data-table td{
-  padding:10px;
-  white-space:nowrap;
-}
-
-.data-table-wrap{
-  overflow:hidden;
-}
-
-.data-table-wrap > div:last-child{
-  overflow-x:auto;
-  -webkit-overflow-scrolling:touch;
-}
-
-/* Trend chart */
-
-.trend-wrap{
-  padding:16px;
-}
-
-.trend-bars{
-  height:90px;
-  gap:4px;
-}
-
-.trend-lbl{
-  font-size:8px;
-}
-
-/* Modal */
-
-.modal{
-  width:100%;
-  max-width:none;
-  padding:20px;
-  max-height:90vh;
-  overflow:auto;
-}
-
-.modal-footer{
-  flex-direction:column;
-}
-
-.modal-footer .btn{
-  width:100%;
-}
-
-/* Toast */
-
-.toast{
-  left:12px;
-  right:12px;
-  bottom:12px;
-  width:auto;
-}
-
-/* Login */
-
-.login-box{
-  padding:32px 24px;
-}
-
-.login-logo{
-  font-size:24px;
-}
-
-/* Buttons */
-
-.btn{
-  min-height:44px;
-}
-}
-
 </style>
 </head>
 <body>
@@ -444,6 +356,10 @@ textarea{
 <div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div></div>
 <div class="toast" id="toast"></div>
 
+<!-- SIDEBAR BACKDROP (mobile) -->
+<div class="sidebar-backdrop" id="sidebarBackdrop" onclick="closeMobileMenu()"></div>
+
+<!-- LOGIN -->
 <div class="login-wrap" id="loginWrap">
   <div class="login-box">
     <div class="login-logo">Aha Yemi Ruchulu</div>
@@ -452,64 +368,62 @@ textarea{
     <input type="password" id="tokenInput" placeholder="Paste owner token here…" autocomplete="off">
     <div class="login-err" id="loginErr">Invalid token. Please try again.</div>
     <button type="button" class="btn btn-gold" style="width:100%;margin-top:16px;" onclick="login()">Access Dashboard</button>
-    <p style="margin-top:20px;font-size:11px;color:var(--dim);">Your token was generated during system setup.<br>Contact system administrator if you need access.</p>
+    <p style="margin-top:18px;font-size:11px;color:var(--dim);">Token generated during system setup.<br>Contact administrator if you need access.</p>
   </div>
 </div>
 
+<!-- APP -->
 <div class="app" id="app">
-  <aside class="sidebar">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
     <div class="sidebar-logo">
       <div class="sidebar-logo-name">Aha Yemi Ruchulu</div>
       <div class="sidebar-logo-sub">Owner Dashboard</div>
     </div>
     <nav class="sidebar-nav">
-      <button class="nav-item active" type="button" onclick="showTab('overview')"><span class="nav-item-icon">📊</span>Overview</button>
-      <button class="nav-item" type="button" onclick="showTab('reservations')"><span class="nav-item-icon">📅</span>All Reservations</button>
-      <button class="nav-item" type="button" onclick="showTab('branches')"><span class="nav-item-icon">🏪</span>Branches</button>
-      <button class="nav-item" type="button" onclick="showTab('managers')"><span class="nav-item-icon">👤</span>Managers</button>
-      <button class="nav-item" type="button" onclick="showTab('franchise')"><span class="nav-item-icon">💼</span>Franchise Leads</button>
-      <button class="nav-item" type="button" onclick="showTab('catering')"><span class="nav-item-icon">🚚</span>Catering Requests</button>
-      <button class="nav-item" type="button" onclick="showTab('settings')"><span class="nav-item-icon">⚙</span>Settings</button>
+      <button class="nav-item active"  type="button" onclick="showTab('overview')">     <span class="nav-item-icon">📊</span>Overview</button>
+      <button class="nav-item"         type="button" onclick="showTab('reservations')"> <span class="nav-item-icon">📅</span>All Reservations</button>
+      <button class="nav-item"         type="button" onclick="showTab('branches')">     <span class="nav-item-icon">🏪</span>Branches</button>
+      <button class="nav-item"         type="button" onclick="showTab('managers')">     <span class="nav-item-icon">👤</span>Managers</button>
+      <button class="nav-item"         type="button" onclick="showTab('franchise')">    <span class="nav-item-icon">💼</span>Franchise Leads</button>
+      <button class="nav-item"         type="button" onclick="showTab('catering')">     <span class="nav-item-icon">🚚</span>Catering Requests</button>
+      <button class="nav-item"         type="button" onclick="showTab('settings')">     <span class="nav-item-icon">⚙</span>Settings</button>
     </nav>
     <div class="sidebar-footer">
       <p id="lastRefresh">—</p>
       <button class="btn btn-outline btn-sm" style="width:100%;margin-top:8px;" onclick="logout()">Sign Out</button>
     </div>
   </aside>
+
+  <!-- MAIN AREA -->
   <main class="main-area">
 
+    <!-- TOPBAR -->
     <div class="topbar">
-  
-      <div class="topbar-title" id="pageTitle">
-        Overview
+      <div class="topbar-title" id="pageTitle">Overview</div>
+      <div class="topbar-actions">
+        <button class="btn btn-outline btn-sm" onclick="loadDashboard()">⟳ Refresh</button>
       </div>
-  
-      <button
-        id="mobileMenuBtn"
-        class="mobile-menu-btn"
-        onclick="toggleMobileMenu()"
-      >
-        ☰
-      </button>
-  
-      <div class="topbar-actions"></div>
-  
+      <!-- Hamburger — only visible on mobile via CSS -->
+      <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleMobileMenu()" aria-label="Open menu">☰</button>
     </div>
-  
 
+    <!-- PAGE CONTENT -->
     <div class="page-content">
     <div class="tab-panels">
 
+      <!-- ══ OVERVIEW ══ -->
       <div class="panel active" id="panel-overview">
-        <div class="stats-grid" id="statsGrid">
+        <div class="stats-grid">
           <div class="stat-card"><div class="stat-label">Today's Bookings</div><div class="stat-value" id="st-today">—</div><div class="stat-icon">📅</div></div>
           <div class="stat-card"><div class="stat-label">Today's Guests</div><div class="stat-value" id="st-guests">—</div><div class="stat-icon">👥</div></div>
           <div class="stat-card"><div class="stat-label">This Week</div><div class="stat-value" id="st-week">—</div><div class="stat-icon">📈</div></div>
           <div class="stat-card"><div class="stat-label">This Month</div><div class="stat-value" id="st-month">—</div><div class="stat-icon">🗓</div></div>
-          <div class="stat-card"><div class="stat-label">Pending Confirmation</div><div class="stat-value" id="st-pending" style="color:#FFA726;">—</div><div class="stat-icon">⏳</div></div>
-          <div class="stat-card"><div class="stat-label">Total Confirmed</div><div class="stat-value" id="st-confirmed" style="color:#66BB6A;">—</div><div class="stat-icon">✅</div></div>
-          <div class="stat-card"><div class="stat-label">Total Cancelled</div><div class="stat-value" id="st-cancelled" style="color:#EF5350;">—</div><div class="stat-icon">❌</div></div>
-          <div class="stat-card"><div class="stat-label">Total Reservations</div><div class="stat-value" id="st-total">—</div><div class="stat-icon">📋</div></div>
+          <div class="stat-card"><div class="stat-label">Pending</div><div class="stat-value" id="st-pending" style="color:#FFA726;">—</div><div class="stat-icon">⏳</div></div>
+          <div class="stat-card"><div class="stat-label">Confirmed</div><div class="stat-value" id="st-confirmed" style="color:#66BB6A;">—</div><div class="stat-icon">✅</div></div>
+          <div class="stat-card"><div class="stat-label">Cancelled</div><div class="stat-value" id="st-cancelled" style="color:#EF5350;">—</div><div class="stat-icon">❌</div></div>
+          <div class="stat-card"><div class="stat-label">Total</div><div class="stat-value" id="st-total">—</div><div class="stat-icon">📋</div></div>
         </div>
 
         <div class="trend-wrap">
@@ -517,7 +431,7 @@ textarea{
           <div class="trend-bars" id="trendBars"></div>
         </div>
 
-        <h3 style="font-size:14px;font-weight:500;margin-bottom:14px;">Branch Performance Today</h3>
+        <div class="section-title">Branch Performance Today</div>
         <div class="branch-grid" id="branchCards">
           <div class="empty-state"><span>⏳</span>Loading…</div>
         </div>
@@ -527,18 +441,16 @@ textarea{
             <div class="table-title">Recent Reservations (All Branches)</div>
             <button class="btn btn-outline btn-sm" onclick="showTab('reservations')">View All</button>
           </div>
-          <div style="overflow-x:auto;">
+          <div class="table-scroll">
             <table class="data-table">
-              <thead><tr>
-                <th>Ref ID</th><th>Name</th><th>Branch</th>
-                <th>Date</th><th>Time</th><th>Guests</th><th>Status</th>
-              </tr></thead>
+              <thead><tr><th>Ref ID</th><th>Name</th><th>Branch</th><th>Date</th><th>Time</th><th>Guests</th><th>Status</th></tr></thead>
               <tbody id="recentFeedBody"></tbody>
             </table>
           </div>
         </div>
       </div>
 
+      <!-- ══ ALL RESERVATIONS ══ -->
       <div class="panel" id="panel-reservations">
         <div class="filter-row section-gap">
           <div class="search-bar"><span class="search-icon">🔍</span><input id="resSearch" placeholder="Search name, phone, ref…" oninput="filterReservations()"></div>
@@ -550,7 +462,7 @@ textarea{
             <option value="cancelled">Cancelled</option>
             <option value="completed">Completed</option>
           </select>
-          <input type="date" id="resDate" style="width:160px;" onchange="filterReservations()">
+          <input type="date" id="resDate" onchange="filterReservations()">
           <button class="btn btn-outline btn-sm" onclick="clearFilters()">Clear</button>
           <button class="btn btn-gold btn-sm" onclick="exportCSV()">⬇ Export CSV</button>
         </div>
@@ -559,23 +471,20 @@ textarea{
             <div class="table-title">All Reservations</div>
             <div id="resCount" style="font-size:12px;color:var(--muted);">—</div>
           </div>
-          <div style="overflow-x:auto;">
+          <div class="table-scroll">
             <table class="data-table">
-              <thead><tr>
-                <th>Ref ID</th><th>Customer</th><th>Phone</th><th>Branch</th>
-                <th>Date</th><th>Time</th><th>Guests</th><th>Table(s)</th>
-                <th>Status</th><th>Actions</th>
-              </tr></thead>
+              <thead><tr><th>Ref ID</th><th>Customer</th><th>Phone</th><th>Branch</th><th>Date</th><th>Time</th><th>Guests</th><th>Table(s)</th><th>Status</th><th>Actions</th></tr></thead>
               <tbody id="allResBody"></tbody>
             </table>
           </div>
         </div>
       </div>
 
+      <!-- ══ BRANCHES ══ -->
       <div class="panel" id="panel-branches">
         <div class="two-col section-gap">
           <div>
-            <h3 style="font-size:14px;font-weight:500;margin-bottom:16px;">Active Branches</h3>
+            <div class="section-title">Active Branches</div>
             <div id="branchMgmtList"></div>
           </div>
           <div class="card">
@@ -593,15 +502,18 @@ textarea{
         </div>
       </div>
 
+      <!-- ══ MANAGERS ══ -->
       <div class="panel" id="panel-managers">
         <div class="two-col section-gap">
           <div>
-            <h3 style="font-size:14px;font-weight:500;margin-bottom:16px;">Current Managers</h3>
+            <div class="section-title">Current Managers</div>
             <div class="data-table-wrap">
-              <table class="data-table">
-                <thead><tr><th>Name</th><th>Email</th><th>Branch</th><th>Status</th><th>Actions</th></tr></thead>
-                <tbody id="managersBody"></tbody>
-              </table>
+              <div class="table-scroll">
+                <table class="data-table">
+                  <thead><tr><th>Name</th><th>Email</th><th>Branch</th><th>Status</th><th>Actions</th></tr></thead>
+                  <tbody id="managersBody"></tbody>
+                </table>
+              </div>
             </div>
           </div>
           <div class="card">
@@ -614,110 +526,83 @@ textarea{
         </div>
       </div>
 
-      <div id="panel-franchise" class="panel">
+      <!-- ══ FRANCHISE LEADS ══ -->
+      <div class="panel" id="panel-franchise">
         <div class="data-table-wrap">
-          <div class="table-header">
-            <div class="table-title">Franchise Applications Pool</div>
-          </div>
-          <div style="overflow-x:auto;">
+          <div class="table-header"><div class="table-title">Franchise Applications Pool</div></div>
+          <div class="table-scroll">
             <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Full Name</th>
-                  <th>Email Address</th>
-                  <th>Phone Number</th>
-                  <th>Target Location</th>
-                  <th>Inquiry Message</th>
-                </tr>
-              </thead>
+              <thead><tr><th>Full Name</th><th>Email</th><th>Phone</th><th>Location</th><th>Message</th></tr></thead>
               <tbody id="franchiseTableBody">
-                <tr><td colspan="5" class="empty-state">Loading applications pool…</td></tr>
+                <tr><td colspan="5" class="empty-state">Loading…</td></tr>
               </tbody>
             </table>
           </div>
         </div>
       </div>
 
-      <div id="panel-catering" class="panel">
+      <!-- ══ CATERING REQUESTS ══ -->
+      <div class="panel" id="panel-catering">
         <div class="data-table-wrap">
-          <div class="table-header">
-            <div class="table-title">Incoming Catering Event Request Slips</div>
-          </div>
-          <div style="overflow-x:auto;">
+          <div class="table-header"><div class="table-title">Incoming Catering Event Requests</div></div>
+          <div class="table-scroll">
             <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Customer Name</th>
-                  <th>Phone Number</th>
-                  <th>Event Type</th>
-                  <th>Event Date</th>
-                  <th>Venue Location</th>
-                  <th>Package Choice</th>
-                  <th>Guest Count</th>
-                  <th>Special Requirements</th>
-                </tr>
-              </thead>
+              <thead><tr><th>Customer</th><th>Phone</th><th>Event Type</th><th>Date</th><th>Location</th><th>Package</th><th>Guests</th><th>Requirements</th></tr></thead>
               <tbody id="cateringTableBody">
-                <tr><td colspan="8" class="empty-state">Loading event logs…</td></tr>
+                <tr><td colspan="8" class="empty-state">Loading…</td></tr>
               </tbody>
             </table>
           </div>
         </div>
       </div>
 
+      <!-- ══ SETTINGS ══ -->
       <div class="panel" id="panel-settings">
-        <div class="card">
-          <div class="card-title">🏪 Default Branch Settings</div>
-        
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">Default Capacity</label>
-              <input id="s-default-capacity" type="number" min="1">
-            </div>
-        
+
+        <!-- Branch Selector for per-branch rules -->
+        <div class="card section-gap">
+          <div class="card-title">🏪 Branch-Specific Reservation Rules</div>
+          <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:16px;">
+            Select a branch to configure its individual rules. These override global settings for that branch only.
+          </p>
+          <div class="form-group">
+            <label class="form-label">Select Branch</label>
+            <select id="branch-settings-sel" onchange="loadBranchSpecificSettings()">
+              <option value="">— Choose a branch to configure —</option>
+            </select>
           </div>
-        
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">Default Booking Window (Days)</label>
-              <input id="s-default-window" type="number" min="1">
+          <div id="branch-specific-panel" style="display:none;">
+            <div style="background:rgba(199,154,59,.06);border:1px solid var(--bdr);padding:14px 16px;margin-bottom:16px;font-size:12px;color:var(--gold);letter-spacing:.5px;">
+              Configuring: <strong id="branch-settings-name">—</strong>
             </div>
-        
-            <div class="form-group">
-              <label class="form-label">Default Cutoff (Minutes)</label>
-              <input id="s-default-cutoff" type="number" min="0">
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">Open Time</label><input type="time" id="bs-open" value="11:00"></div>
+              <div class="form-group"><label class="form-label">Close Time</label><input type="time" id="bs-close" value="22:30"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">Max Guests / Booking</label><input type="number" id="bs-max-guests" value="20"></div>
+              <div class="form-group"><label class="form-label">Slot Interval (mins)</label><input type="number" id="bs-interval" value="30"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">Reservation Duration (mins)</label><input type="number" id="bs-duration" value="90"></div>
+              <div class="form-group"><label class="form-label">Min Advance Booking (mins)</label><input type="number" id="bs-min-adv" value="30"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">Max Advance Booking (days)</label><input type="number" id="bs-max-adv" value="14"></div>
+              <div class="form-group"><label class="form-label">Today's Capacity Override</label><input type="number" id="bs-cap-override" placeholder="Leave blank = no override"></div>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;">
+              <button class="btn btn-gold" onclick="saveBranchSpecificSettings()">Save Branch Settings</button>
+              <button class="btn btn-outline btn-sm" onclick="resetBranchToGlobal()" style="font-size:11px;">Reset to Global Defaults</button>
             </div>
           </div>
         </div>
+
         <div class="two-col">
+          <!-- Global Settings -->
           <div class="card">
-            <div class="card-title">⚙ Global Reservation Settings</div>
-            <div class="form-group">
-              <label class="form-label">Capacity Override Branch</label>
-              <select id="s-capacity-branch"
-              onchange="loadCapacityOverride()"></select>
-              
-              
-              
-              <div class="form-group">
-                <label class="form-label">
-                  Today's Capacity Override
-                </label>
-                <input
-                  id="s-capacity-override"
-                  type="number"
-                  min="1"
-                >
-              </div>
-              
-              <button
-  class="btn btn-outline"
-  onclick="saveCapacityOverride()"
->
-  Save Today's Override
-</button>
-            </div>
-            
+            <div class="card-title">🌐 Global Reservation Settings</div>
+            <p style="font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.6;">These apply to all branches that don't have branch-specific overrides.</p>
             <div class="form-row">
               <div class="form-group"><label class="form-label">Min Advance (mins)</label><input id="s-min" type="number" value="30"></div>
               <div class="form-group"><label class="form-label">Max Advance (days)</label><input id="s-max" type="number" value="14"></div>
@@ -729,28 +614,42 @@ textarea{
             <div class="form-row">
               <div class="form-group"><label class="form-label">Max Guests</label><input id="s-guests" type="number" value="20"></div>
               <div class="form-group"><label class="form-label">Email Notifications</label>
-                <select id="s-email"><option value="true">Enabled</option><option value="false">Disabled</option></select></div>
+                <select id="s-email"><option value="true">Enabled</option><option value="false">Disabled</option></select>
+              </div>
             </div>
             <div class="form-row">
               <div class="form-group"><label class="form-label">Open Time</label><input id="s-open" type="time" value="11:00"></div>
               <div class="form-group"><label class="form-label">Close Time</label><input id="s-close" type="time" value="22:30"></div>
             </div>
             <div class="form-group"><label class="form-label">WhatsApp Notifications</label>
-              <select id="s-wa"><option value="false">Disabled</option><option value="true">Enabled (Twilio)</option></select></div>
-            <button class="btn btn-gold" style="width:100%;margin-top:8px;" onclick="saveSettings()">Save Settings</button>
+              <select id="s-wa"><option value="false">Disabled</option><option value="true">Enabled (Twilio)</option></select>
+            </div>
+            <button class="btn btn-gold" style="width:100%;margin-top:8px;" onclick="saveSettings()">Save Global Settings</button>
           </div>
+
+          <!-- Security -->
           <div class="card">
-            <div class="card-title">🔒 Security</div>
-            <div class="form-group"><label class="form-label">Regenerate Manager Token</label>
-              <select id="regen-branch-sel"></select></div>
+            <div class="card-title">🔒 Security & Tokens</div>
+            <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:18px;">Regenerate a manager token to immediately revoke their current access and issue a new one.</p>
+            <div class="form-group">
+              <label class="form-label">Regenerate Manager Token for Branch</label>
+              <select id="regen-branch-sel"></select>
+            </div>
             <button class="btn btn-danger" style="width:100%;margin-top:8px;" onclick="regenerateManagerToken()">🔄 Regenerate Manager Token</button>
+            <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--bdr);">
+              <p style="font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:12px;">Regenerate your own owner access token. Your current session will end immediately.</p>
+              <button class="btn btn-outline" style="width:100%;" onclick="regenerateOwnerToken()">🔄 Regenerate Owner Token</button>
+            </div>
           </div>
         </div>
       </div>
 
-    </div></div></main>
+    </div><!-- /tab-panels -->
+    </div><!-- /page-content -->
+  </main>
 </div>
 
+<!-- RESERVATION DETAIL MODAL -->
 <div class="modal-overlay" id="resModal">
   <div class="modal">
     <div class="modal-title" id="modalTitle">Reservation Details</div>
@@ -764,18 +663,18 @@ textarea{
 </div>
 
 <script>
-// ═══════════════════════════════════════════
-// CONFIG — Replace with your deployed Web App URL
+// ════════════════════════════════════════════
+// CONFIG
 const API_URL = 'https://script.google.com/macros/s/AKfycbxCvG16NhAtmHc33FX5hwNgan7szrROlvOKqjvpq85kUHY5Xpu3opqYFGN2Ju5mUgdl/exec';
-// ═══════════════════════════════════════════
+// ════════════════════════════════════════════
+
 let TOKEN = '';
-const savedToken = sessionStorage.getItem('ownerToken');
 let DASHBOARD_DATA = null;
 let ALL_RES = [];
 let BRANCHES = [];
 let currentModalRes = null;
 
-// ── NAVIGATION TAB MECHANISM ──────────────────
+// ── AUTH ─────────────────────────────────────
 function login() {
   const t = document.getElementById('tokenInput').value.trim();
   if (!t) return;
@@ -783,7 +682,7 @@ function login() {
   sessionStorage.setItem('ownerToken', t);
   loadDashboard();
 }
-// ── LEAVE BLANK OR IMPLEMENT LOGOUT ───────
+
 function logout() {
   sessionStorage.removeItem('ownerToken');
   TOKEN = '';
@@ -792,16 +691,35 @@ function logout() {
   document.getElementById('tokenInput').value = '';
 }
 
-// ── API CALL ──────────────────────────────
+function showLoginErr() {
+  document.getElementById('loginErr').style.display = 'block';
+  TOKEN = '';
+}
+
+// ── MOBILE MENU ───────────────────────────────
+function toggleMobileMenu() {
+  const sidebar  = document.getElementById('sidebar');
+  const backdrop = document.getElementById('sidebarBackdrop');
+  const isOpen   = sidebar.classList.contains('open');
+  sidebar.classList.toggle('open', !isOpen);
+  backdrop.classList.toggle('open', !isOpen);
+}
+
+function closeMobileMenu() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarBackdrop').classList.remove('open');
+}
+
+// ── API HELPER ────────────────────────────────
 async function api(action, body = {}) {
-  const res  = await fetch(API_URL, {
+  const res = await fetch(API_URL, {
     method: 'POST',
     body: JSON.stringify({ action, token: TOKEN, ...body })
   });
   return res.json();
 }
 
-// ── LOAD DASHBOARD ────────────────────────
+// ── LOAD DASHBOARD ────────────────────────────
 async function loadDashboard() {
   showLoading(true);
   try {
@@ -817,88 +735,43 @@ async function loadDashboard() {
     populateBranchCards(data.branches || []);
     populateRecentFeed(data.recentFeed || []);
     populateBranchSelects(data.branches || []);
-    
-    // Inject custom lists into standalone sections
     populateFranchiseLeads(data.franchiseLeads || []);
     populateCateringRequests(data.cateringRequests || []);
 
-    // Load all reservations
     const resData = await api('exportReservations', { filters: {} });
+    if (resData.success) {
+      ALL_RES = (resData.reservations || []).sort((a, b) => {
+        return new Date(`${a.reservationDate} ${a.reservationTime||'00:00'}`) -
+               new Date(`${b.reservationDate} ${b.reservationTime||'00:00'}`);
+      });
+      populateAllRes(ALL_RES);
+    }
 
-if (resData.success) {
-
-  ALL_RES = resData.reservations || [];
-
-  ALL_RES.sort((a, b) => {
-
-    const dateA = new Date(
-      `${a.reservationDate} ${a.reservationTime || '00:00'}`
-    );
-
-    const dateB = new Date(
-      `${b.reservationDate} ${b.reservationTime || '00:00'}`
-    );
-
-    return dateA - dateB; // upcoming first
-
-  });
-
-  populateAllRes(ALL_RES);
-
-}
     populateManagers(data.managers || []);
     populateSettings(data.settings || {});
-    
+
     document.getElementById('loginWrap').style.display = 'none';
     document.getElementById('app').classList.add('show');
     document.getElementById('lastRefresh').textContent = 'Updated ' + new Date().toLocaleTimeString();
   } catch (e) {
     showToast('Connection error: ' + e.message, 'error');
     showLoginErr();
-  } finally { 
-    showLoading(false); 
+  } finally {
+    showLoading(false);
   }
 }
-async function loadCapacityOverride() {
 
-const branchId =
-  document.getElementById(
-    's-capacity-branch'
-  ).value;
-
-if (!branchId) return;
-
-const r = await api(
-  'getCapacityOverride',
-  { branchId }
-);
-
-console.log('getCapacityOverride response:', r);
-
-if (r && r.success) {
-
-  document.getElementById(
-    's-capacity-override'
-  ).value =
-    r.capacity || '';
-
-}
-}
-function showLoginErr() {
-  document.getElementById('loginErr').style.display = 'block';
-  TOKEN = '';
-}
-
-// ── POPULATE FUNCTIONS ────────────────────
+// ── POPULATE FUNCTIONS ────────────────────────
 function populateStats(d) {
-  setText('st-today',     d.totals.todayBookings);
-  setText('st-guests',    d.totals.todayGuests);
-  setText('st-week',      d.totals.thisWeekBookings);
-  setText('st-month',     d.totals.monthlyBookings);
-  setText('st-pending',   d.totals.pendingCount);
-  setText('st-confirmed', d.totals.confirmedCount);
-  setText('st-cancelled', d.totals.cancelledCount);
-  setText('st-total',     d.totals.totalReservations);
+  const t = d.totals;
+  setText('st-today',     t.todayBookings);
+  setText('st-guests',    t.todayGuests);
+  setText('st-week',      t.thisWeekBookings);
+  setText('st-month',     t.monthlyBookings);
+  setText('st-pending',   t.pendingCount);
+  setText('st-confirmed', t.confirmedCount);
+  setText('st-cancelled', t.cancelledCount);
+  setText('st-total',     t.totalReservations);
 }
 
 function populateTrend(weeks) {
@@ -906,7 +779,7 @@ function populateTrend(weeks) {
   document.getElementById('trendBars').innerHTML = weeks.map(w => `
     <div class="trend-bar-col">
       <div class="trend-num">${w.bookings}</div>
-      <div class="trend-bar" style="height:${Math.max(w.bookings/max*80,4)}px;" title="${w.label}: ${w.bookings}"></div>
+      <div class="trend-bar" style="height:${Math.max(w.bookings/max*76,4)}px;" title="${w.label}: ${w.bookings}"></div>
       <div class="trend-lbl">${w.label}</div>
     </div>`).join('');
 }
@@ -914,26 +787,26 @@ function populateTrend(weeks) {
 function populateBranchCards(branches) {
   document.getElementById('branchCards').innerHTML = branches.map(b => `
     <div class="branch-card">
-      <div class="branch-badge">${b.active !== false ? 'Active' : 'Inactive'}</div>
+      <div class="branch-badge">${b.active!==false?'Active':'Inactive'}</div>
       <div class="branch-card-name">${b.branchName}</div>
-      <div class="branch-card-addr" style="font-size:11px;">${b.branchId}</div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:12px;">${b.branchId}</div>
       <div class="branch-stat"><span class="branch-stat-label">Today</span><span class="branch-stat-val text-gold">${b.todayBookings}</span></div>
       <div class="branch-stat"><span class="branch-stat-label">This Week</span><span class="branch-stat-val">${b.weeklyBookings}</span></div>
       <div class="branch-stat"><span class="branch-stat-label">This Month</span><span class="branch-stat-val">${b.monthlyBookings}</span></div>
-      <div class="branch-stat"><span class="branch-stat-label">Utilisation</span><span class="branch-stat-val">${b.utilisationToday}%</span></div>
+      <div class="branch-stat"><span class="branch-stat-label">Utilisation</span><span class="branch-stat-val">${b.utilisationToday||0}%</span></div>
       <div class="branch-stat"><span class="branch-stat-label">Total Guests</span><span class="branch-stat-val">${(b.totalGuests||0).toLocaleString()}</span></div>
-    </div>`).join('') || '<div class="empty-state"><span>🏪</span>No branches found</div>';
+    </div>`).join('') || '<div class="empty-state"><span>🏪</span>No branches</div>';
 }
 
 function populateRecentFeed(res) {
   document.getElementById('recentFeedBody').innerHTML = res.map(r => `
     <tr>
       <td><code style="font-size:11px;color:var(--gold);">${r.reservationId}</code></td>
-      <td>${r.customerName || '—'}</td>
-      <td style="font-size:12px;color:var(--muted);">${r.branchName || r.branch || '—'}</td>
+      <td>${r.customerName||'—'}</td>
+      <td style="font-size:12px;color:var(--muted);">${r.branchName||r.branch||'—'}</td>
       <td>${fmtDate(r.reservationDate)}</td>
       <td>${fmtTime(r.reservationTime)}</td>
-      <td>${r.guests || '—'}</td>
+      <td>${r.guests||'—'}</td>
       <td><span class="badge badge-${r.status}">${r.status}</span></td>
     </tr>`).join('') || '<tr><td colspan="7" class="empty-state">No recent reservations</td></tr>';
 }
@@ -943,599 +816,353 @@ function populateAllRes(res) {
   document.getElementById('allResBody').innerHTML = res.map(r => `
     <tr>
       <td><code style="font-size:11px;color:var(--gold);">${r.reservationId}</code></td>
-      <td>${r.customerName || '—'}</td>
-      <td><a href="tel:${r.phone}">${r.phone || '—'}</a></td>
-      <td style="font-size:12px;color:var(--muted);">${r.branchName || r.branch || '—'}</td>
+      <td>${r.customerName||'—'}</td>
+      <td><a href="tel:${r.phone}">${r.phone||'—'}</a></td>
+      <td style="font-size:12px;color:var(--muted);">${r.branchName||r.branch||'—'}</td>
       <td>${fmtDate(r.reservationDate)}</td>
       <td>${fmtTime(r.reservationTime)}</td>
-      <td>${r.guests || '—'}</td>
+      <td>${r.guests||'—'}</td>
       <td style="font-size:11px;">${fmtTables(r.assignedTables)}</td>
       <td><span class="badge badge-${r.status}">${r.status}</span></td>
-      <td><button type="button" class="btn btn-outline btn-sm"  onclick="openReservation('${r.reservationId}')">View</button></td>
+      <td><button type="button" class="btn btn-outline btn-sm" onclick="openReservation('${r.reservationId}')">View</button></td>
     </tr>`).join('') || '<tr><td colspan="10" class="empty-state">No reservations found</td></tr>';
 }
-function openReservation(id){
+
+function openReservation(id) {
   const r = ALL_RES.find(x => x.reservationId === id);
-  if(r) openModal(r);
+  if (r) openModal(r);
 }
+
 function populateManagers(mgrs) {
-  const branchMap = {};
-  (DASHBOARD_DATA?.branches || []).forEach(b => { branchMap[b.branchId] = b.branchName; });
+  const bmap = {};
+  (DASHBOARD_DATA?.branches||[]).forEach(b => { bmap[b.branchId] = b.branchName; });
   document.getElementById('managersBody').innerHTML = mgrs.map(m => `
     <tr>
       <td>${m.name}</td>
       <td style="font-size:12px;">${m.email}</td>
-      <td>${branchMap[m.branchId] || m.branchId}</td>
-      <td><span class="badge ${m.active ? 'badge-confirmed' : 'badge-cancelled'}">${m.active ? 'Active' : 'Inactive'}</span></td>
+      <td>${bmap[m.branchId]||m.branchId}</td>
+      <td><span class="badge ${m.active?'badge-confirmed':'badge-cancelled'}">${m.active?'Active':'Inactive'}</span></td>
       <td><button class="btn btn-danger btn-sm" onclick="removeManager('${m.email}')">Remove</button></td>
-    </tr>`).join('') || '<tr><td colspan="5" class="empty-state">No managers found</td></tr>';
+    </tr>`).join('') || '<tr><td colspan="5" class="empty-state">No managers</td></tr>';
 }
-
-
-
-
 
 function populateBranchSelects(branches) {
   const opts = branches.map(b => `<option value="${b.branchId}">${b.branchName}</option>`).join('');
-  ['nm-branch','regen-branch-sel'].forEach(id => {
+  ['nm-branch','regen-branch-sel','branch-settings-sel'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.innerHTML = '<option value="">Select branch</option>' + opts;
   });
   const resBranch = document.getElementById('resBranch');
   if (resBranch) resBranch.innerHTML = '<option value="">All Branches</option>' + opts;
-
-  const overrideSel =
-  document.getElementById(
-    's-capacity-branch'
-    
-  );
-
-if (overrideSel) {
-  overrideSel.innerHTML =
-    '<option value="">Select Branch</option>' +
-    opts;
-}
 }
 
-// ── FRANCHISE LEADS HANDLER ──
 function populateFranchiseLeads(leads) {
-  const fBody = document.getElementById('franchiseTableBody');
-  if (!fBody) return;
-  if (leads.length === 0) {
-    fBody.innerHTML = `<tr><td colspan="5" class="empty-state">No franchise applications logged yet.</td></tr>`;
-    return;
-  }
-  fBody.innerHTML = leads.map(lead => `
+  const el = document.getElementById('franchiseTableBody');
+  if (!el) return;
+  if (!leads.length) { el.innerHTML = '<tr><td colspan="5" class="empty-state">No applications yet.</td></tr>'; return; }
+  el.innerHTML = leads.map(l => `
     <tr>
-      <td><strong>${lead.fullName || '—'}</strong></td>
-      <td><a href="mailto:${lead.emailAddress}" style="color:var(--gold);">${lead.emailAddress || '—'}</a></td>
-      <td><a href="tel:${lead.phoneNumber}">${lead.phoneNumber || '—'}</a></td>
-      <td>${lead.location || '—'}</td>
-      <td style="font-size:13px; opacity:0.8; white-space: pre-wrap;">${lead.message || '—'}</td>
+      <td><strong>${l.fullName||'—'}</strong></td>
+      <td><a href="mailto:${l.emailAddress}">${l.emailAddress||'—'}</a></td>
+      <td><a href="tel:${l.phoneNumber}">${l.phoneNumber||'—'}</a></td>
+      <td>${l.location||'—'}</td>
+      <td style="font-size:12px;opacity:.8;">${l.message||'—'}</td>
     </tr>`).join('');
 }
 
-// ── CATERING REQUESTS HANDLER ──
-function populateCateringRequests(requests) {
-  const cBody = document.getElementById('cateringTableBody');
-  if (!cBody) return;
-  if (requests.length === 0) {
-    cBody.innerHTML = `<tr><td colspan="8" class="empty-state">No catering requests logged yet.</td></tr>`;
-    return;
-  }
-  cBody.innerHTML = requests.map(req => `
+function populateCateringRequests(reqs) {
+  const el = document.getElementById('cateringTableBody');
+  if (!el) return;
+  if (!reqs.length) { el.innerHTML = '<tr><td colspan="8" class="empty-state">No catering requests yet.</td></tr>'; return; }
+  el.innerHTML = reqs.map(r => `
     <tr>
-      <td><strong>${req.yourName || '—'}</strong></td>
-      <td><a href="tel:${req.phone}">${req.phone || '—'}</a></td>
-      <td><span class="badge badge-pending">${req.eventType || '—'}</span></td>
-      <td><strong>${req.eventDate || '—'}</strong></td>
-      <td>${req.location || '—'}</td>
-      <td style="color:var(--gold); font-weight:500;">${req.packageInterest || '—'}</td>
-      <td><strong>${req.guestCount || '0'} Pax</strong></td>
-      <td style="font-size:13px; opacity:0.8; white-space: pre-wrap;">${req.specialRequirements || '—'}</td>
+      <td><strong>${r.yourName||'—'}</strong></td>
+      <td><a href="tel:${r.phone}">${r.phone||'—'}</a></td>
+      <td><span class="badge badge-pending">${r.eventType||'—'}</span></td>
+      <td><strong>${r.eventDate||'—'}</strong></td>
+      <td>${r.location||'—'}</td>
+      <td style="color:var(--gold);font-weight:500;">${r.packageInterest||'—'}</td>
+      <td><strong>${r.guestCount||0} Pax</strong></td>
+      <td style="font-size:12px;">${r.specialRequirements||'—'}</td>
     </tr>`).join('');
 }
 
-// ── SETTINGS ENGINE (FIXED MAP METHOD) ──
 function populateSettings(s) {
-  if (s.MIN_ADVANCE_MINS)   document.getElementById('s-min').value   = s.MIN_ADVANCE_MINS;
-  if (s.MAX_ADVANCE_DAYS)   document.getElementById('s-max').value   = s.MAX_ADVANCE_DAYS;
-  if (s.RESERVATION_MINS)   document.getElementById('s-dur').value   = s.RESERVATION_MINS;
-  if (s.SLOT_INTERVAL_MINS) document.getElementById('s-int').value   = s.SLOT_INTERVAL_MINS;
-  if (s.MAX_GUESTS)         document.getElementById('s-guests').value= s.MAX_GUESTS;
-  if (s.OPEN_TIME)          document.getElementById('s-open').value  = s.OPEN_TIME;
-  if (s.CLOSE_TIME)         document.getElementById('s-close').value = s.CLOSE_TIME;
-  if (s.EMAIL_NOTIFICATIONS) document.getElementById('s-email').value= s.EMAIL_NOTIFICATIONS;
-  if (s.WHATSAPP_ENABLED)   document.getElementById('s-wa').value    = s.WHATSAPP_ENABLED;
+  if (s.MIN_ADVANCE_MINS)    setVal('s-min',     s.MIN_ADVANCE_MINS);
+  if (s.MAX_ADVANCE_DAYS)    setVal('s-max',     s.MAX_ADVANCE_DAYS);
+  if (s.RESERVATION_MINS)    setVal('s-dur',     s.RESERVATION_MINS);
+  if (s.SLOT_INTERVAL_MINS)  setVal('s-int',     s.SLOT_INTERVAL_MINS);
+  if (s.MAX_GUESTS)          setVal('s-guests',  s.MAX_GUESTS);
+  if (s.OPEN_TIME)           setVal('s-open',    s.OPEN_TIME);
+  if (s.CLOSE_TIME)          setVal('s-close',   s.CLOSE_TIME);
+  if (s.EMAIL_NOTIFICATIONS) setVal('s-email',   s.EMAIL_NOTIFICATIONS);
+  if (s.WHATSAPP_ENABLED)    setVal('s-wa',      s.WHATSAPP_ENABLED);
 
   const branchMgmt = document.getElementById('branchMgmtList');
   if (branchMgmt && DASHBOARD_DATA) {
-    branchMgmt.innerHTML = (DASHBOARD_DATA.branches || []).map(b => `
-      <div class="card" style="margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; padding:14px 20px;">
+    branchMgmt.innerHTML = (DASHBOARD_DATA.branches||[]).map(b => `
+      <div class="card" style="margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;padding:14px 18px;">
         <div>
           <strong style="font-size:14px;">${b.branchName}</strong><br>
-          <code style="font-size:11px; color:var(--gold);">${b.branchId}</code>
+          <code style="font-size:11px;color:var(--gold);">${b.branchId}</code>
         </div>
-        <span class="badge badge-confirmed">Active</span>
-      </div>`).join('') || '<div class="empty-state">No configured branches.</div>';
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="badge badge-confirmed">${b.active!==false?'Active':'Inactive'}</span>
+          <button class="btn btn-outline btn-sm" onclick="showTab('settings');loadBranchSettings('${b.branchId}')">Configure</button>
+        </div>
+      </div>`).join('') || '<div class="empty-state">No branches</div>';
   }
-  if (s.DEFAULT_CAPACITY)
-  document.getElementById('s-default-capacity').value =
-    s.DEFAULT_CAPACITY;
-
-if (s.DEFAULT_BOOKING_WINDOW)
-  document.getElementById('s-default-window').value =
-    s.DEFAULT_BOOKING_WINDOW;
-
-if (s.DEFAULT_CUTOFF_MINS)
-  document.getElementById('s-default-cutoff').value =
-    s.DEFAULT_CUTOFF_MINS;
-
-
 }
 
-// ── DASHBOARD CONTROLS ────────────────────
-async function addNewBranch() {
-  const branchName = document.getElementById('nb-name').value.trim();
-  const spreadsheetId = document.getElementById('nb-ssid').value.trim();
-  const managerEmail = document.getElementById('nb-email').value.trim();
-  const managerName = document.getElementById('nb-mgr').value.trim();
-  const phone = document.getElementById('nb-phone').value.trim();
-  const address = document.getElementById('nb-addr').value.trim();
+// ── BRANCH-SPECIFIC SETTINGS ──────────────────
+async function loadBranchSpecificSettings() {
+  const sel    = document.getElementById('branch-settings-sel');
+  const panel  = document.getElementById('branch-specific-panel');
+  const nameEl = document.getElementById('branch-settings-name');
+  const bId    = sel.value;
 
-  if (!branchName || !spreadsheetId || !managerEmail) {
-    showToast('Branch Name, Spreadsheet ID, and Manager Email are required.', 'error');
-    return;
-  }
+  if (!bId) { panel.style.display = 'none'; return; }
+
+  const branch = BRANCHES.find(b => b.branchId === bId);
+  if (nameEl) nameEl.textContent = branch?.branchName || bId;
+  panel.style.display = 'block';
 
   showLoading(true);
   try {
-    const r = await api('addBranch', { branchName, spreadsheetId, managerEmail, managerName, phone, address });
-    if (r.success) {
-      showToast('Branch added successfully.', 'success');
-      ['nb-name', 'nb-ssid', 'nb-email', 'nb-mgr', 'nb-phone', 'nb-addr'].forEach(id => {
-        document.getElementById(id).value = '';
-      });
-      loadDashboard();
-    } else {
-      showToast(r.error || 'Failed to add branch', 'error');
+    const data = await api('getBranchSettings', { branchId: bId });
+    if (data.success && data.settings) {
+      const s = data.settings;
+      setVal('bs-open',         s.OPEN_TIME          || '11:00');
+      setVal('bs-close',        s.CLOSE_TIME         || '22:30');
+      setVal('bs-max-guests',   s.MAX_GUESTS         || '20');
+      setVal('bs-interval',     s.SLOT_INTERVAL_MINS || '30');
+      setVal('bs-duration',     s.RESERVATION_MINS   || '90');
+      setVal('bs-min-adv',      s.MIN_ADVANCE_MINS   || '30');
+      setVal('bs-max-adv',      s.MAX_ADVANCE_DAYS   || '14');
+      setVal('bs-cap-override', s.CAPACITY_OVERRIDE  || '');
     }
-  } catch (e) {
-    showToast('Error: ' + e.message, 'error');
-  } finally {
-    showLoading(false);
+  } catch(e) { showToast('Could not load branch settings', 'error'); }
+  finally { showLoading(false); }
+}
+
+function loadBranchSettings(bId) {
+  const sel = document.getElementById('branch-settings-sel');
+  if (sel) { sel.value = bId; loadBranchSpecificSettings(); }
+}
+
+async function saveBranchSpecificSettings() {
+  const bId = document.getElementById('branch-settings-sel').value;
+  if (!bId) { showToast('Select a branch first.', 'error'); return; }
+  const settings = {
+    OPEN_TIME:           getVal('bs-open'),
+    CLOSE_TIME:          getVal('bs-close'),
+    MAX_GUESTS:          getVal('bs-max-guests'),
+    SLOT_INTERVAL_MINS:  getVal('bs-interval'),
+    RESERVATION_MINS:    getVal('bs-duration'),
+    MIN_ADVANCE_MINS:    getVal('bs-min-adv'),
+    MAX_ADVANCE_DAYS:    getVal('bs-max-adv'),
+    CAPACITY_OVERRIDE:   getVal('bs-cap-override')
+  };
+  showLoading(true);
+  const r = await api('updateBranchSettings', { branchId: bId, settings });
+  showLoading(false);
+  showToast(r.success ? 'Branch settings saved.' : r.error, r.success?'success':'error');
+}
+
+async function resetBranchToGlobal() {
+  const bId = document.getElementById('branch-settings-sel').value;
+  if (!bId) return;
+  if (!confirm('Reset this branch to use global settings?')) return;
+  const global = DASHBOARD_DATA?.settings || {};
+  showLoading(true);
+  const r = await api('updateBranchSettings', { branchId: bId, settings: global });
+  showLoading(false);
+  showToast(r.success ? 'Branch reset to global defaults.' : r.error, r.success?'success':'error');
+  if (r.success) loadBranchSpecificSettings();
+}
+
+// ── ACTIONS ────────────────────────────────────
+async function addNewBranch() {
+  const d = {
+    branchName: getVal('nb-name'), spreadsheetId: getVal('nb-ssid'),
+    managerEmail: getVal('nb-email'), managerName: getVal('nb-mgr'),
+    phone: getVal('nb-phone'), address: getVal('nb-addr')
+  };
+  if (!d.branchName||!d.spreadsheetId||!d.managerEmail) {
+    showToast('Name, Spreadsheet ID and Manager Email required.','error'); return;
   }
+  showLoading(true);
+  const r = await api('addBranch', d);
+  showLoading(false);
+  showToast(r.success?'Branch added.':r.error, r.success?'success':'error');
+  if (r.success) { ['nb-name','nb-ssid','nb-email','nb-mgr','nb-phone','nb-addr'].forEach(id=>setVal(id,'')); loadDashboard(); }
 }
 
 async function addManager() {
-  const name = document.getElementById('nm-name').value.trim();
-  const email = document.getElementById('nm-email').value.trim();
-  const branchId = document.getElementById('nm-branch').value;
-
-  if (!name || !email || !branchId) {
-    showToast('All fields are required to add a manager.', 'error');
-    return;
-  }
-
+  const d = { name:getVal('nm-name'), email:getVal('nm-email'), branchId:getVal('nm-branch') };
+  if (!d.name||!d.email||!d.branchId) { showToast('All fields required.','error'); return; }
   showLoading(true);
-  try {
-    const r = await api('addManager', { name, email, branchId });
-    if (r.success) {
-      showToast('Manager added successfully.', 'success');
-      document.getElementById('nm-name').value = '';
-      document.getElementById('nm-email').value = '';
-      document.getElementById('nm-branch').value = '';
-      loadDashboard();
-    } else {
-      showToast(r.error || 'Failed to add manager', 'error');
-    }
-  } catch (e) {
-    showToast('Error: ' + e.message, 'error');
-  } finally {
-    showLoading(false);
-  }
+  const r = await api('addManager', d);
+  showLoading(false);
+  showToast(r.success?'Manager added.':r.error, r.success?'success':'error');
+  if (r.success) { ['nm-name','nm-email'].forEach(id=>setVal(id,'')); loadDashboard(); }
 }
 
 async function removeManager(email) {
-  if (!confirm(`Are you sure you want to deactivate/remove manager: ${email}?`)) return;
+  if (!confirm('Deactivate manager: '+email+'?')) return;
   showLoading(true);
-  try {
-    const r = await api('removeManager', { email });
-    if (r.success) {
-      showToast('Manager deactivated successfully.', 'success');
-      loadDashboard();
-    } else {
-      showToast(r.error || 'Failed to remove manager', 'error');
-    }
-  } catch (e) {
-    showToast('Error: ' + e.message, 'error');
-  } finally {
-    showLoading(false);
-  }
+  const r = await api('removeManager', { email });
+  showLoading(false);
+  showToast(r.success?'Manager removed.':r.error, r.success?'success':'error');
+  if (r.success) loadDashboard();
 }
-
-
-
-
-async function saveCapacityOverride() {
-
-  const branchId =
-    document.getElementById('s-capacity-branch').value;
-
-  const capacity =
-    document.getElementById('s-capacity-override').value;
-
-  if (!branchId || !capacity) {
-    showToast(
-      'Select branch and enter capacity',
-      'error'
-    );
-    return;
-  }
-
-  showLoading(true);
-
-  try {
-
-    const r = await api(
-      'saveCapacityOverride',
-      {
-        branchId,
-        capacity
-      }
-    );
-
-    if (r.success) {
-
-      showToast(
-        'Capacity override saved',
-        'success'
-      );
-      await loadDashboard();
-    } else {
-
-      showToast(
-        r.error || 'Failed to save override',
-        'error'
-      );
-    }
-
-  } catch (e) {
-
-    showToast(
-      'Error: ' + e.message,
-      'error'
-    );
-
-  } finally {
-
-    showLoading(false);
-
-  }
-}
-
-
-
 
 async function saveSettings() {
   const settings = {
-    MIN_ADVANCE_MINS:    document.getElementById('s-min').value,
-    MAX_ADVANCE_DAYS:    document.getElementById('s-max').value,
-    RESERVATION_MINS:    document.getElementById('s-dur').value,
-    SLOT_INTERVAL_MINS:  document.getElementById('s-int').value,
-    MAX_GUESTS:          document.getElementById('s-guests').value,
-    EMAIL_NOTIFICATIONS: document.getElementById('s-email').value,
-    OPEN_TIME:           document.getElementById('s-open').value,
-    CLOSE_TIME:          document.getElementById('s-close').value,
-    WHATSAPP_ENABLED:    document.getElementById('s-wa').value,
-    DEFAULT_CAPACITY:    document.getElementById('s-default-capacity').value,
-    DEFAULT_BOOKING_WINDOW:
-    document.getElementById('s-default-window').value,
-
-  DEFAULT_CUTOFF_MINS:
-    document.getElementById('s-default-cutoff').value,
+    MIN_ADVANCE_MINS:   getVal('s-min'),   MAX_ADVANCE_DAYS:   getVal('s-max'),
+    RESERVATION_MINS:   getVal('s-dur'),   SLOT_INTERVAL_MINS: getVal('s-int'),
+    MAX_GUESTS:         getVal('s-guests'), EMAIL_NOTIFICATIONS:getVal('s-email'),
+    OPEN_TIME:          getVal('s-open'),  CLOSE_TIME:         getVal('s-close'),
+    WHATSAPP_ENABLED:   getVal('s-wa')
   };
-
   showLoading(true);
-  try {
-    const r = await api('updateGlobalSettings', { settings });
-    if (r.success) {
-      showToast('Global settings updated successfully.', 'success');
-      loadDashboard();
-    } else {
-      showToast(r.error || 'Failed to update settings', 'error');
-    }
-  } catch (e) {
-    showToast('Error: ' + e.message, 'error');
-  } finally {
-    showLoading(false);
-  }
+  const r = await api('updateGlobalSettings', { settings });
+  showLoading(false);
+  showToast(r.success?'Global settings saved.':r.error, r.success?'success':'error');
 }
-
-
-
-
 
 async function regenerateManagerToken() {
-  const branchId = document.getElementById('regen-branch-sel').value;
-  if (!branchId) {
-    showToast('Please select a branch first.', 'error');
-    return;
-  }
-  if (!confirm('Are you sure you want to regenerate manager token for this branch?')) return;
+  const bId = getVal('regen-branch-sel');
+  if (!bId) { showToast('Select a branch.','error'); return; }
+  if (!confirm('Regenerate manager token for this branch?')) return;
   showLoading(true);
-  try {
-    const r = await api('generateManagerToken', { branchId });
-    if (r.success) {
-      showToast('Manager token regenerated.', 'success');
-      alert('New Manager Token generated:\n\n' + r.token + '\n\nMake sure to copy and send this to the manager.');
-      loadDashboard();
-    } else {
-      showToast(r.error || 'Failed to regenerate manager token', 'error');
-    }
-  } catch (e) {
-    showToast('Error: ' + e.message, 'error');
-  } finally {
-    showLoading(false);
-  }
+  const r = await api('generateManagerToken', { branchId: bId });
+  showLoading(false);
+  if (r.success) alert('New Manager Token:\n\n'+r.token+'\n\nSend to the branch manager immediately.');
+  else showToast(r.error,'error');
 }
 
-// ── RESERVATIONS MANAGEMENT ───────────────
+async function regenerateOwnerToken() {
+  if (!confirm('Generate new owner token? Your current session ends immediately.')) return;
+  showLoading(true);
+  const r = await api('generateOwnerToken');
+  showLoading(false);
+  if (r.success) { alert('New Owner Token:\n\n'+r.token+'\n\nSave this — it will not be shown again.'); logout(); }
+  else showToast(r.error,'error');
+}
+
+// ── FILTERS ────────────────────────────────────
 function filterReservationsData() {
-  const q = document.getElementById('resSearch').value.toLowerCase().trim();
-  const branchId = document.getElementById('resBranch').value;
-  const status = document.getElementById('resStatus').value;
-  const date = document.getElementById('resDate').value;
-
-  let result = ALL_RES;
-  if (q) {
-    result = result.filter(r => 
-      (r.customerName || '').toLowerCase().includes(q) ||
-      (r.phone || '').includes(q) ||
-      (r.reservationId || '').toLowerCase().includes(q)
-    );
-  }
-  if (branchId) {
-    result = result.filter(r => r.branch === branchId);
-  }
-  if (status) {
-    result = result.filter(r => r.status === status);
-  }
-  if (date) {
-    result = result.filter(r => {
-      const d = r.reservationDate ? new Date(r.reservationDate).toISOString().split('T')[0] : '';
-      return d === date;
-    });
-  }
-  return result;
+  const q = getVal('resSearch').toLowerCase();
+  const b = getVal('resBranch'), s = getVal('resStatus'), d = getVal('resDate');
+  return ALL_RES.filter(r => {
+    if (q && !(r.customerName||'').toLowerCase().includes(q) && !(r.phone||'').includes(q) && !(r.reservationId||'').toLowerCase().includes(q)) return false;
+    if (b && r.branch !== b) return false;
+    if (s && r.status !== s) return false;
+    if (d && new Date(r.reservationDate).toISOString().split('T')[0] !== d) return false;
+    return true;
+  });
 }
-
-function filterReservations() {
-  const filtered = filterReservationsData();
-  populateAllRes(filtered);
-}
-
-function clearFilters() {
-  document.getElementById('resSearch').value = '';
-  document.getElementById('resBranch').value = '';
-  document.getElementById('resStatus').value = '';
-  document.getElementById('resDate').value = '';
-  populateAllRes(ALL_RES);
-}
+function filterReservations() { populateAllRes(filterReservationsData()); }
+function clearFilters() { ['resSearch','resBranch','resStatus','resDate'].forEach(id=>setVal(id,'')); populateAllRes(ALL_RES); }
 
 function exportCSV() {
   const filtered = filterReservationsData();
-  if (!filtered.length) {
-    showToast('No reservations to export.', 'error');
-    return;
-  }
+  if (!filtered.length) { showToast('No data to export.','error'); return; }
   let csv = 'Ref ID,Customer,Phone,Branch,Date,Time,Guests,Tables,Status\n';
   filtered.forEach(r => {
-    const tables = Array.isArray(r.assignedTables) ? r.assignedTables.map(t => t.name || t.tableId || t).join(';') : String(r.assignedTables || '');
-    csv += `"${r.reservationId}","${r.customerName || ''}","${r.phone || ''}","${r.branchName || r.branch || ''}","${fmtDate(r.reservationDate)}","${r.reservationTime || ''}",${r.guests || 0},"${tables}","${r.status || ''}"\n`;
+    csv += `"${r.reservationId}","${r.customerName||''}","${r.phone||''}","${r.branchName||r.branch||''}","${fmtDate(r.reservationDate)}","${r.reservationTime||''}",${r.guests||0},"${fmtTables(r.assignedTables)}","${r.status||''}"\n`;
   });
-
-  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
-  link.setAttribute('download', 'reservations_export.csv');
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download = 'reservations.csv'; a.click();
 }
 
+// ── MODAL ──────────────────────────────────────
 function openModal(r) {
   currentModalRes = r;
   document.getElementById('modalTitle').textContent = 'Reservation — ' + r.reservationId;
-  
-  const tables = Array.isArray(r.assignedTables) ? r.assignedTables.map(t => t.name || t.tableId || t).join(', ') : String(r.assignedTables || '—');
-  
   document.getElementById('modalBody').innerHTML = `
     <table style="width:100%;border-collapse:collapse;">
-      ${[
-        ['Customer', r.customerName || '—'],
-        ['Phone', `<a href="tel:${r.phone}">${r.phone || '—'}</a>`],
-        ['Branch', r.branchName || r.branch || '—'],
-        ['Date', fmtDate(r.reservationDate)],
-        ['Time', r.reservationTime || '—'],
-        ['Guests', r.guests || '—'],
-        ['Status', `<span class="badge badge-${r.status}">${r.status}</span>`],
-        ['Special Requests', r.specialRequests || 'None'],
-        ['Created At', fmtDate(r.createdAt)]
-      ].map(([label, value]) => `
-        <tr>
-          <td style="padding:8px 0;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);width:35%;border-bottom:1px solid var(--bdr);">${label}</td>
-          <td style="padding:8px 0;font-size:13px;border-bottom:1px solid var(--bdr);">${value}</td>
-        </tr>
-      `).join('')}
+      ${[['Customer',r.customerName||'—'],['Phone',`<a href="tel:${r.phone}">${r.phone||'—'}</a>`],
+         ['Branch',r.branchName||r.branch||'—'],['Date',fmtDate(r.reservationDate)],
+         ['Time',fmtTime(r.reservationTime)],['Guests',r.guests||'—'],
+         ['Tables',fmtTables(r.assignedTables)],
+         ['Status',`<span class="badge badge-${r.status}">${r.status}</span>`],
+         ['Special Requests',r.specialRequests||'None'],['Created',fmtDate(r.createdAt)]
+        ].map(([l,v])=>`<tr><td style="padding:7px 0;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);width:35%;border-bottom:1px solid var(--bdr);">${l}</td><td style="padding:7px 0;font-size:13px;border-bottom:1px solid var(--bdr);">${v}</td></tr>`).join('')}
     </table>`;
-  
-  document.getElementById('modalConfirmBtn').style.display = r.status === 'pending' ? 'inline-block' : 'none';
-  document.getElementById('modalCancelBtn').style.display = r.status === 'cancelled' ? 'none' : 'inline-block';
+  document.getElementById('modalConfirmBtn').style.display = r.status==='pending'?'inline-flex':'none';
+  document.getElementById('modalCancelBtn').style.display  = r.status==='cancelled'?'none':'inline-flex';
   document.getElementById('resModal').classList.add('open');
 }
 
+function closeModal() { document.getElementById('resModal').classList.remove('open'); }
+
 async function modalAction(action) {
   if (!currentModalRes) return;
-  const resId = currentModalRes.reservationId;
-  const branchId = currentModalRes.branch;
-
-  if (action === 'cancel') {
-    const reason = prompt('Please enter cancellation reason (optional):') || 'Cancelled by Owner';
+  const id = currentModalRes.reservationId, branch = currentModalRes.branch;
+  if (action==='cancel') {
+    const reason = prompt('Cancellation reason (optional):') || 'Cancelled by Owner';
     showLoading(true);
-    try {
-      const r = await api('cancelReservation', { reservationId: resId, branchId, reason });
-      if (r.success) {
-        showToast('Reservation cancelled.', 'success');
-        closeModal();
-        loadDashboard();
-      } else {
-        showToast(r.error || 'Failed to cancel reservation', 'error');
-      }
-    } catch (e) {
-      showToast('Error: ' + e.message, 'error');
-    } finally {
-      showLoading(false);
-    }
-  } else if (action === 'confirm') {
+    const r = await api('cancelReservation',{reservationId:id,branchId:branch,reason});
+    showLoading(false);
+    showToast(r.success?'Cancelled.':r.error,r.success?'success':'error');
+    if(r.success){closeModal();loadDashboard();}
+  } else {
     showLoading(true);
-    try {
-      const r = await api('confirmReservation', { reservationId: resId, branchId });
-      if (r.success) {
-        showToast('Reservation confirmed.', 'success');
-        closeModal();
-        loadDashboard();
-      } else {
-        showToast(r.error || 'Failed to confirm reservation', 'error');
-      }
-    } catch (e) {
-      showToast('Error: ' + e.message, 'error');
-    } finally {
-      showLoading(false);
-    }
+    const r = await api('confirmReservation',{reservationId:id,branchId:branch});
+    showLoading(false);
+    showToast(r.success?'Confirmed.':r.error,r.success?'success':'error');
+    if(r.success){closeModal();loadDashboard();}
   }
 }
 
-// ── UTILITIES ─────────────────────────────
-function fmtTime(timeValue) {
-  if (!timeValue) return '—';
-
-  // Already HH:mm
-  if (/^\d{1,2}:\d{2}/.test(timeValue)) {
-    return timeValue;
-  }
-
-  try {
-    const d = new Date(timeValue);
-
-    if (!isNaN(d)) {
-      return d.toLocaleTimeString([], {
-        hour: '2-digit',
-        minute: '2-digit'
-      });
-    }
-  } catch(e) {}
-
-  return timeValue;
+// ── TAB SYSTEM ─────────────────────────────────
+function showTab(name) {
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('panel-'+name)?.classList.add('active');
+  document.querySelector(`.nav-item[onclick="showTab('${name}')"]`)?.classList.add('active');
+  const titles={overview:'Overview',reservations:'All Reservations',branches:'Branch Management',managers:'Manager Management',settings:'Settings',franchise:'Franchise Leads',catering:'Catering Requests'};
+  document.getElementById('pageTitle').textContent = titles[name]||name;
+  closeMobileMenu();
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
-function setText(id, txt) { const e = document.getElementById(id); if(e) e.textContent = txt !== undefined ? txt : '—'; }
-// Keep other utilities
-function showLoading(s) { document.getElementById('loadingOverlay').classList.toggle('show', s); }
-function fmtDate(value) {
-  if (!value) return '—';
-
-  if (/^\d{4}-\d{2}-\d{2}$/.test(value))
-    return value;
-
-  const d = new Date(value);
-
-  if (isNaN(d)) return value;
-
-  return d.toLocaleDateString('en-IN');
+// ── UTILITIES ───────────────────────────────────
+function setText(id,v){const e=document.getElementById(id);if(e)e.textContent=v??'—';}
+function setVal(id,v){const e=document.getElementById(id);if(e)e.value=v??'';}
+function getVal(id){const e=document.getElementById(id);return e?e.value:'';}
+function showLoading(v){document.getElementById('loadingOverlay').classList.toggle('show',v);}
+function showToast(msg,type='success'){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast show '+type;
+  setTimeout(()=>t.classList.remove('show'),3500);
 }
-// Keep format functions
-function fmtTables(t) {
-  if (!t) return '—';
-
-  try {
-    if (typeof t === 'string') t = JSON.parse(t);
-
-    if (Array.isArray(t)) {
-      return t.map(x =>
-        typeof x === 'object'
-          ? (x.name || x.tableId || '')
-          : x
-      ).join(', ');
-    }
-
-    return String(t);
-  } catch {
-    return String(t);
-  }
+function fmtDate(v){
+  if(!v) return '—';
+  if(/^\d{4}-\d{2}-\d{2}$/.test(v)) return v;
+  const d=new Date(v);
+  return isNaN(d)?v:d.toLocaleDateString('en-IN');
+}
+function fmtTime(v){
+  if(!v) return '—';
+  if(/^\d{1,2}:\d{2}/.test(v)) return v;
+  try{const d=new Date(v);return isNaN(d)?v:d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});}
+  catch(e){return v;}
+}
+function fmtTables(t){
+  if(!t) return '—';
+  try{if(typeof t==='string')t=JSON.parse(t);if(Array.isArray(t))return t.map(x=>typeof x==='object'?(x.name||x.tableId||''):x).join(', ');return String(t);}
+  catch{return String(t);}
 }
 
-function showToast(msg, type='success') { const t=document.getElementById('toast'); t.textContent=msg; t.className='toast show '+type; setTimeout(()=>t.classList.remove('show'),3000); }
-function closeModal() { document.getElementById('resModal').classList.remove('open'); }
-function showTab(name){
-
-  document
-    .querySelectorAll('.panel')
-    .forEach(p => p.classList.remove('active'));
-
-  document
-    .querySelectorAll('.nav-item')
-    .forEach(n => n.classList.remove('active'));
-
-  document
-    .getElementById('panel-' + name)
-    ?.classList.add('active');
-
-  const activeBtn = document.querySelector(
-    `.nav-item[onclick="showTab('${name}')"]`
-  );
-
-  if(activeBtn){
-    activeBtn.classList.add('active');
-  }
-  if(window.innerWidth <= 640){
-
-document
-  .querySelector('.sidebar')
-  .classList.remove('open');
-
-}
-  window.scrollTo({
-    top:0,
-    behavior:'smooth'
-  });
-
-  document.getElementById('pageTitle').textContent =
-    {
-      overview:'Overview',
-      reservations:'All Reservations',
-      branches:'Branch Management',
-      managers:'Manager Management',
-      settings:'Settings',
-      franchise:'Franchise Inquiries',
-      catering:'Catering Requests'
-    }[name] || name;
-}
-// Run automatically on load if token exists
-function toggleMobileMenu(){
-
-document
-  .querySelector('.sidebar')
-  .classList.toggle('open');
-
-}
-window.addEventListener('DOMContentLoaded', () => {
-   
-  if (savedToken) {
-    TOKEN = savedToken;
-    document.getElementById('tokenInput').value = savedToken;
-    loadDashboard();
-  }
+// ── INIT ───────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  const saved = sessionStorage.getItem('ownerToken');
+  if (saved) { TOKEN = saved; loadDashboard(); }
+  document.getElementById('tokenInput').addEventListener('keydown', e => { if(e.key==='Enter') login(); });
 });
 </script>
 <script src="rreserveapi.js"></script>
